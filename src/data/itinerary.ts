@@ -1,0 +1,233 @@
+import type { ItineraryVariant } from './types';
+
+/**
+ * Two shaped itineraries: the recommended flying plan, and what the same trip
+ * looks like if we take our own car. Dates are built around the planned
+ * 17 September window with one deliberate spare day.
+ */
+export const ITINERARIES: ItineraryVariant[] = [
+  {
+    id: 'fly-plan',
+    name: 'Fly in to Haikou, out of Sanya',
+    subtitle: '6 nights · 15 – 21 September 2026 · one-way rental car',
+    recommended: true,
+    summary:
+      'Two clear days before the launch, one spare morning in case it slips, then a slow drift south to the beach with the car, flying home from Sanya. This is the plan that keeps the children (and the parents) closest to normal sleep.',
+    days: [
+      {
+        date: '2026-09-15',
+        dayLabel: 'Day 1 · Tue',
+        title: 'Fly to Haikou, drive up to Wenchang',
+        base: 'Wenchang · Gaolong Bay 高隆湾',
+        drive: '~1 h 10 m from HAK',
+        plan: [
+          'Mid-morning flight XMN → HAK — nothing before 08:00 with an 8-month-old',
+          'Collect the rental car at the airport; fit and check both child seats before leaving the lot',
+          'Supermarket stop on the way north: nappies, formula, water, fruit, snacks',
+          'Early dinner, early night — everyone sleeps off the travel day',
+        ],
+        toddler: 'Keep the flight inside the nap window; feed the baby on descent to help her ears.',
+        flexibility: 'fixed',
+      },
+      {
+        date: '2026-09-16',
+        dayLabel: 'Day 2 · Wed',
+        title: 'Wenchang, science centre, launch prep',
+        base: 'Wenchang · Gaolong Bay',
+        drive: 'Local only',
+        plan: [
+          'Morning at 文昌航天科普中心 (space science centre) — air-conditioned, toddler-friendly, and it explains what the children are about to see',
+          'Afternoon at the hotel pool or the beach; nap for both children',
+          'Reconnaissance drive to Longlou to see where we will park on launch morning, if time allows',
+          'Pack the launch bag the night before; charge everything; set an alarm for 04:30',
+        ],
+        toddler: 'This is the calm day. Do not schedule anything that needs a car at nap time.',
+        flexibility: 'flexible',
+      },
+      {
+        date: '2026-09-17',
+        dayLabel: 'Day 3 · Thu · LAUNCH',
+        title: 'Rocket launch at Wenchang',
+        base: 'Wenchang · Gaolong Bay',
+        drive: '~35–45 min to Longlou',
+        plan: [
+          '04:45 wake and dress the children; feed and change the baby before leaving',
+          '05:15 leave the hotel; park outside the controlled zone and walk or shuttle in',
+          '06:00 set up in shade — let the 3-year-old run while it is still cool',
+          '08:15 ear defenders on, children held; 08:30–08:54 launch window opens',
+          'Do not rush the exit: breakfast and shade for an hour while the traffic drains',
+        ],
+        toddler: 'Ear defenders for both children, water, shade, and a carrier for the baby. Expect an unsettled afternoon — plan a quiet hotel evening.',
+        flexibility: 'fixed',
+      },
+      {
+        date: '2026-09-18',
+        dayLabel: 'Day 4 · Fri',
+        title: 'Buffer day (or second launch attempt)',
+        base: 'Wenchang · Gaolong Bay',
+        drive: 'Local only',
+        plan: [
+          'If the launch flew: beach day, pool, and nothing scheduled — recovery for everyone',
+          'If it was scrubbed: this is the spare day for the next attempt, and the car means no rebooking',
+          'Optional: Tongguling or the northern beaches if the children are rested',
+        ],
+        toddler: 'Deliberately empty. Two big days in a row is the limit for an 8-month-old.',
+        flexibility: 'buffer',
+      },
+      {
+        date: '2026-09-19',
+        dayLabel: 'Day 5 · Sat',
+        title: 'Drive south to Shimei Bay / Wanning',
+        base: 'Wanning · Shimei Bay 石梅湾',
+        drive: '~1 h 45 m',
+        plan: [
+          'Late breakfast, then the coastal expressway south — toll-free on Hainan',
+          'Check in to a resort with a shallow kids’ pool and a beach',
+          'Afternoon on the sand before the worst of the sun',
+        ],
+        toddler: 'Drive in the nap window so the baby sleeps and the 3-year-old watches a tablet or the sea.',
+        flexibility: 'flexible',
+      },
+      {
+        date: '2026-09-20',
+        dayLabel: 'Day 6 · Sun',
+        title: 'Beach day, or Lingshui / resort pool',
+        base: 'Wanning · Shimei Bay',
+        drive: 'Flexible — car means options',
+        plan: [
+          'Shimei Bay beach morning; lunch at the hotel',
+          'Optional family activity: 兴隆热带植物园 (botanical gardens, stroller-friendly) or a shallow bay swim',
+          'Keep 分界洲岛 and other boat-based trips for when the children are older — ferry + sun + infant is a hard combination',
+        ],
+        toddler: 'Jellyfish and strong sun are the two things to watch in September; ask at the resort before swimming.',
+        flexibility: 'flexible',
+      },
+      {
+        date: '2026-09-21',
+        dayLabel: 'Day 7 · Mon',
+        title: 'Drive to Sanya, fly home',
+        base: 'Home in Xiamen',
+        drive: '~2 h to SYX',
+        plan: [
+          'Leave with a wide margin — 3 h at the airport with two children is realistic',
+          'Drop the car at SYX, check the stroller at the gate',
+          'Evening flight home',
+        ],
+        toddler: 'Book the latest reasonable departure; a morning flight after a beach holiday is a bad trade.',
+        flexibility: 'fixed',
+      },
+    ],
+  },
+  {
+    id: 'drive-plan',
+    name: 'Own car, drive both ways',
+    subtitle: '8 days · 14 – 21 September 2026 · own car + ferry',
+    summary:
+      'The same launch, but four of the eight days are travel days. Within a 5–7 day window this is only viable if the drive itself is part of the holiday — otherwise the launch trip has almost no holiday left in it.',
+    days: [
+      {
+        date: '2026-09-14',
+        dayLabel: 'Day 1 · Mon',
+        title: 'Xiamen → overnight stop in Guangdong',
+        base: 'Shantou / Huizhou 汕头 / 惠州',
+        drive: '~650 km · ~8 h with breaks',
+        plan: ['Load the car the night before', 'Two long driving blocks with a proper lunch stop', 'Family room, early night'],
+        toddler: 'Two adults means one can sit in the back with the children; break every 1.5–2 h.',
+        flexibility: 'fixed',
+      },
+      {
+        date: '2026-09-15',
+        dayLabel: 'Day 2 · Tue',
+        title: 'Drive to Xuwen, ferry to Hainan, on to Wenchang',
+        base: 'Wenchang 文昌',
+        drive: '~670 km + ferry',
+        plan: ['Early start towards Zhanjiang and the Leizhou peninsula', 'Ferry check-in and queue', 'Crossing, then drive to Wenchang'],
+        toddler: 'Passengers must leave the car for the crossing — carrier for the baby, snacks for the toddler.',
+        flexibility: 'fixed',
+      },
+      {
+        date: '2026-09-16',
+        dayLabel: 'Day 3 · Wed',
+        title: 'Recover and prepare',
+        base: 'Wenchang',
+        drive: 'Local only',
+        plan: ['Slow morning — everyone will need it', 'Science centre in the afternoon', 'Pack the launch bag early'],
+        toddler: 'Do not add anything ambitious; the previous two days were the hardest of the trip.',
+        flexibility: 'flexible',
+      },
+      {
+        date: '2026-09-17',
+        dayLabel: 'Day 4 · Thu · LAUNCH',
+        title: 'Rocket launch at Wenchang',
+        base: 'Wenchang',
+        drive: '~35–45 min to Longlou',
+        plan: ['04:45 wake, 05:15 leave', 'Shade and shade again', '08:30 launch, then wait out the traffic'],
+        toddler: 'Own car seats mean the children can sleep in the car on the way home afterwards.',
+        flexibility: 'fixed',
+      },
+      {
+        date: '2026-09-18',
+        dayLabel: 'Day 5 · Fri',
+        title: 'Beach day near Wenchang, or a scrub buffer',
+        base: 'Wenchang',
+        drive: 'Local only',
+        plan: ['Gaolong Bay or Qishuiwan with the car', 'Spare day if the launch slipped'],
+        toddler: 'One real holiday day so far — keep it unscheduled.',
+        flexibility: 'buffer',
+      },
+      {
+        date: '2026-09-19',
+        dayLabel: 'Day 6 · Sat',
+        title: 'Drive south for a resort night',
+        base: 'Wanning / Lingshui 万宁 / 陵水',
+        drive: '~2 h',
+        plan: ['Move south for better beaches', 'One night of resort pool and beach'],
+        toddler: 'Short drive, big payoff.',
+        flexibility: 'flexible',
+      },
+      {
+        date: '2026-09-20',
+        dayLabel: 'Day 7 · Sun',
+        title: 'Drive north to the ferry',
+        base: 'Xuwen / Zhanjiang 徐闻 / 湛江',
+        drive: '~3 h + ferry + onward',
+        plan: ['Cross back to the mainland in the afternoon', 'Sleep on the mainland to avoid a night arrival'],
+        toddler: 'Second ferry crossing with tired children; expect the queue again.',
+        flexibility: 'fixed',
+      },
+      {
+        date: '2026-09-21',
+        dayLabel: 'Day 8 · Mon',
+        title: 'Long drive home to Xiamen',
+        base: 'Home in Xiamen',
+        drive: '~670 km',
+        plan: ['Early start', 'Break the day up; arrive in the evening'],
+        toddler: 'The whole family will be done with the car by now.',
+        flexibility: 'fixed',
+      },
+    ],
+  },
+];
+
+export const DELAY_PLAN = [
+  {
+    when: 'Launch slips by 24 hours',
+    do: 'Stay an extra night where we are and shunt every later day one day later. With a rental car and free-cancellation hotels this costs almost nothing except an extra hotel night.',
+  },
+  {
+    when: 'Launch slips by 2–3 days',
+    do: 'Swap the order: relax at the beach first, then drive back north for the new window. Flexible return flights matter far more than a fixed itinerary here.',
+  },
+  {
+    when: 'Launch slips beyond the trip window',
+    do: 'Accept it, keep the holiday, and watch the livestream. Do not chase a launch with an 8-month-old at the end of a long day — the 17th is a target, not an obligation.',
+  },
+  {
+    when: 'Typhoon closes the strait or grounds flights',
+    do: 'If we drove, we are stuck on one side and need to hotel it out. If we flew, we are already on the island — the car can move us anywhere the weather is better.',
+  },
+  {
+    when: 'Ferry queues run many hours',
+    do: 'Book the earliest sailing and arrive well before the cut-off; sleep near Xuwen the night before rather than trying to catch a specific crossing the same day we drive 670 km.',
+  },
+];

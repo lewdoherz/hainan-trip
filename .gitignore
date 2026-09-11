@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vite
+*.log
+
+# Local browser profiles created while verifying the app in a headless Chromium
+.chrome-profile
