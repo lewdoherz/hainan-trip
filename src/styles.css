@@ -1117,6 +1117,17 @@ code {
 .ctable__badges td {
   border-bottom: 0;
 }
+.ctable__caption {
+  caption-side: top;
+  text-align: left;
+  padding: 12px 14px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  background: var(--sand-50);
+  border-bottom: 1px solid var(--line);
+  max-width: 92ch;
+}
+
 .ctable--bases .base__name {
   display: block;
   font-weight: 650;

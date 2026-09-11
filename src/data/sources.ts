@@ -89,6 +89,33 @@ export const SOURCES: Source[] = [
     note: 'The authoritative place for road closures around 龙楼镇, official viewing arrangements and launch-day advice. Also publishes via the 文昌发布 channel.',
   },
   {
+    id: 'cnsa-viewing',
+    label: 'CNSA’s official list of Wenchang launch-viewing points',
+    url: 'https://www.tropicalhainan.com/eight-best-observation-points-for-the-wenchang-rocket-launch-according-to-china-national-space-administration/',
+    publisher: 'CNSA list, republished by Tropical Hainan',
+    kind: 'secondary',
+    verifiedAt: '2026-09-11',
+    note: 'The eight sanctioned viewing points at Longlou, with parking and capacity figures: Stone Park, Qiaotou Park (293 cars / 4,000 people), the Aerospace Science Centre (674 cars / 3,000 people), Shanhaitian exhibition-centre beach (7,000 people), Tianfu Yunlongwan Resort (the closest point), plus the Wenchang Hilton and the Luneng Shanhaitian hotel. The list dates from 2022 (page updated June 2024) and references the national launch site, so treat it as the local framework rather than this mission’s final arrangements.',
+  },
+  {
+    id: 'th-typhoon',
+    label: 'Hainan 2026 typhoon-season outlook',
+    url: 'https://www.tropicalhainan.com/typhoon-season-2026-what-hainan-residents-can-expect-in-the-coming-months/',
+    publisher: 'Tropical Hainan (citing China’s National Climate Centre)',
+    kind: 'secondary',
+    verifiedAt: '2026-09-11',
+    note: '24–26 named storms basin-wide and 7–9 China landfalls forecast for 2026, with above-normal intensity; El Niño shifts genesis east and lowers Hainan’s odds. Hainan averages about two direct landfalls a year with August and September carrying the largest share. The Qiongzhou Strait ferries and the HAK/SYX airports are the first systems suspended, and orange or red warnings typically stop ferries and close schools.',
+  },
+  {
+    id: 'climate-data',
+    label: 'Hainan September climate normals (1991–2021)',
+    url: 'https://en.climate-data.org/asia/china/hainan-868/r/september-9/',
+    publisher: 'Climate-Data.org',
+    kind: 'secondary',
+    verifiedAt: '2026-09-11',
+    note: 'September averages 26.8–27.3 °C with a maximum around 29.5 °C and minimum 24.7 °C, humidity of 84–85%, rainfall of 225–258 mm spread over 14–16 rainy days, and about nine hours of sunshine a day — the basis for our climate and packing guidance. Sea-surface temperature around 29 °C (31.3 °C observed in September 2025) came from w-weather.com.',
+  },
+  {
     id: 'll2',
     label: 'TheSpaceDevs Launch Library 2 — launch record for 2026-09-17',
     url: 'https://ll.thespacedevs.com/2.2.0/launch/898f7df0-b6ce-4a5c-80b4-67e81842124e/?mode=detailed',
@@ -303,7 +330,7 @@ export const DATA_STATUS = {
   method:
     'Figures were compiled from airline, airport, rail, ferry and government portals where they could be reached, and from well-established travel facts. Everything the app is unsure about is labelled Estimate or Assumption, shown as a range where possible, and left editable.',
   limitation:
-    'Automated web search was unavailable in the environment where this app was built, so research went directly to reachable pages: official and operator sites plus live timetable and price listings. Scheduled facts — the drive route and tolls, ferry fares and booking rules, the rail chain and the absence of a through train, fuel prices — are verified against the named sources below. Live quotes for airfares and rental rates could not be obtained, because those booking sites block automated access; they remain ranges for you to replace. The launch date itself could not be confirmed against an official schedule.',
+    'Automated web search was unavailable in the environment where this app was built, so research went directly to reachable pages: official and operator sites plus live timetable and price listings. Scheduled facts — the 17 September launch window (two airspace-notice databases plus an official Wenchang no-fly notice), the drive route and tolls, ferry fares and booking rules, the rail chain and the absence of a through train, fuel prices and the airlines\' child and baggage rules — are verified against the named sources below. Live quotes for airfares and rental rates could not be obtained, because those booking sites block automated access; they remain ranges for you to replace. And no official mission announcement exists yet: the launch is corroborated, not confirmed.',
   howToVerify: [
     'Launch date and viewing rules → Wenchang government notices (文昌发布) and CNSA/CMSA/中国航天科技集团.',
     'Ferry sailings, vehicle prices and check-in cut-off → the 琼州海峡轮渡管家 mini-program.',

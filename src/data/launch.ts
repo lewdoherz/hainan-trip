@@ -98,10 +98,28 @@ export const LAUNCH_FACTS: LaunchFact[] = [
     note: 'Everyone leaves at once on the same few roads. Leaving on foot with the stroller and walking out late is usually faster than queueing.',
   },
   {
-    label: 'Weather specifics for the day',
-    value: 'Not verified',
-    confidence: 'assumption',
-    note: 'No reliable long-range source was reachable from this build. Check 中国天气网 in the week before departure for typhoon and thunderstorm warnings.',
+    label: 'September climate at Wenchang',
+    value: '26.8–27.3 °C average, ~29.5 °C max, 84–85% humidity',
+    confidence: 'verified',
+    note: '1991–2021 normals for Hainan in September: 225–258 mm of rain spread over 14–16 rainy days, about nine hours of sun a day, and sea-surface temperatures around 29 °C — genuinely warm swimming water, but expect rain on most days and an extreme UV index.',
+  },
+  {
+    label: 'Typhoon risk, September 2026',
+    value: 'Peak season: August and September carry the largest share of Hainan landfalls',
+    confidence: 'verified',
+    note: 'The 2026 outlook forecasts 24–26 named storms basin-wide with 7–9 China landfalls and above-normal intensity, though El Niño shifts genesis east and lowers Hainan’s odds. Hainan averages about two direct landfalls a year, with the threat running July–October. Qiongzhou Strait ferries and both Hainan airports are the first systems suspended; orange or red warnings typically stop ferries outright.',
+  },
+  {
+    label: 'Official viewing points',
+    value: 'Eight sanctioned points at Longlou, capacity-managed on launch day',
+    confidence: 'verified',
+    note: 'CNSA’s published list: Stone Park, Qiaotou Park (293 cars / 4,000 people), the Aerospace Science Centre (674 cars / 3,000 people), Shanhaitian exhibition-centre beach (the largest, 7,000 people), Tianfu Yunlongwan Resort (the closest point of all), and two hotels — the Wenchang Hilton and the Luneng Shanhaitian. The list was published for the national launch site and dates from 2022 (page updated 2024), so treat the names as the local framework rather than this mission’s final arrangements.',
+  },
+  {
+    label: 'Smartest place to sleep',
+    value: 'A hotel that is itself a sanctioned viewing point',
+    confidence: 'estimate',
+    note: 'The Wenchang Hilton and the Luneng Shanhaitian are on the official list. Sleeping at one of them turns launch morning from a pre-dawn drive with two children into a lift ride — but confirm current arrangements, because the list is a few years old.',
   },
 ];
 
@@ -133,6 +151,46 @@ export const VIEWING_SPOTS: ViewingSpot[] = [
     caveat: 'Arrive early: crowds queue for hours to hold a place, which is hard on an infant.',
     confidence: 'estimate',
     sourceIds: ['hinews'],
+  },
+  {
+    id: 'shanhaitian-beach',
+    name: 'Shanhaitian exhibition-centre beach',
+    cn: '山海天会展中心海滩',
+    distance: 'Sanctioned point — the largest capacity on the official list',
+    access: 'Public beach, capacity-managed on launch day (listed at 7,000 people)',
+    ticket: 'Free',
+    stroller: 'partial',
+    goodFor:
+      'The biggest sanctioned viewing area, and the one that best tolerates a family arriving with a mat, a shade tent and two children — sand for the 3-year-old and room to spread out.',
+    caveat: 'Soft sand and no shade of its own; the official capacity figure is from a 2022 list, so check the current arrangements.',
+    confidence: 'verified',
+    sourceIds: ['cnsa-viewing'],
+  },
+  {
+    id: 'tianfu-yunlongwan',
+    name: 'Tianfu Yunlongwan Resort (closest sanctioned point)',
+    cn: '天福云龙湾度假村',
+    distance: 'The closest point on the official list',
+    access: 'Resort grounds, capacity-managed on launch day',
+    ticket: 'Not verified',
+    stroller: 'yes',
+    goodFor: 'The nearest sanctioned view if the priority is maximum drama and minimum walking.',
+    caveat: 'Being closest also means the loudest — the worst spot for an 8-month-old without serious ear protection.',
+    confidence: 'verified',
+    sourceIds: ['cnsa-viewing'],
+  },
+  {
+    id: 'qiaotou-park',
+    name: 'Qiaotou Park',
+    cn: '桥头公园',
+    distance: 'Sanctioned point, listed at 293 cars / 4,000 people',
+    access: 'Public park, capacity-managed on launch day',
+    ticket: 'Free',
+    stroller: 'yes',
+    goodFor: 'A park rather than a rock beach: level ground, some shade and a fenced feel, with parking counted at under 300 cars.',
+    caveat: 'Only 293 cars on the official list — arrive early or expect to be turned away from the car park.',
+    confidence: 'verified',
+    sourceIds: ['cnsa-viewing'],
   },
   {
     id: 'qishuiwan',
@@ -203,18 +261,19 @@ export const VIEWING_SPOTS: ViewingSpot[] = [
     sourceIds: ['hinews'],
   },
   {
-    id: 'longlou-rooftop',
-    name: 'Longlou Town rooftops and homestays',
-    cn: '龙楼镇楼顶观礼',
-    distance: '~3–8 km depending on the building',
-    access: 'Private rooftops, usually sold with a room or a day ticket',
+    id: 'longlou-stay',
+    name: 'Stay where you watch: Longlou hotels and homestays',
+    cn: '龙楼镇酒店 / 民宿楼顶观礼',
+    distance: 'In town — the two listed hotels are official viewing points',
+    access: 'Private rooftops, usually sold with a room or a day ticket; the Wenchang Hilton and Luneng Shanhaitian are on the sanctioned list',
     ticket: 'Not verified — prices spike on launch nights',
     stroller: 'yes',
     goodFor:
-      'The best baby compromise: shade, a toilet, water and a bed indoors, so the 8-month-old can nap while one adult keeps watch from the roof.',
-    caveat: 'Quality varies wildly, and 90–95% occupancy means the town is effectively full on launch nights — book the room, not just the rooftop.',
+      'The best option with a baby, and arguably the best decision in this whole plan: a room in Longlou — ideally one of the two hotels that are themselves sanctioned viewing points — means shade, a toilet and a bed, so the 8-month-old can nap while one adult watches from the roof.',
+    caveat:
+      'Longlou runs at 90–95% occupancy on launch nights and locals describe it as 一房难求, so book early and book a cancellable rate. Rooftop quality varies wildly between buildings.',
     confidence: 'assumption',
-    sourceIds: ['hinews'],
+    sourceIds: ['hinews', 'cnsa-viewing'],
   },
 ];
 
@@ -342,21 +401,21 @@ export const NOISE_AND_BABY = [
 
 export const LAUNCH_PLAN_OPTIONS = [
   {
+    id: 'stay-in-longlou',
+    name: 'Plan A · Stay at a viewing point (recommended)',
+    detail:
+      'Book a room in Longlou — ideally the Wenchang Hilton or the Luneng Shanhaitian, both on the official viewing-point list, or a homestay with rooftop access. Shade, a toilet and a bed for the 8-month-old replace a 04:30 drive, and one adult can watch while the other settles the baby. Book early and cancellable.',
+  },
+  {
     id: 'ticketed-platform',
-    name: 'Plan A · Ticketed platform (recommended)',
+    name: 'Plan B · Ticketed platform',
     detail:
-      'Book seats at the 文昌航天观礼中心 or 瑶光观礼平台: ~2 km from the pad, seated, organised, with a short walk. Pitch up around 06:00 for the 08:25 window. Best odds of a happy 3-year-old and a calm baby.',
+      'Seats at the 文昌航天观礼中心 or 瑶光观礼平台: roughly 2 km from the commercial pad, seated and organised, with the shortest walk of any spot. In place by about 06:00 for the 08:25 window. Best if the priority is the view and a calmer 3-year-old.',
   },
   {
-    id: 'beach-close',
-    name: 'Plan B · Beach close-in',
+    id: 'beach-or-bay',
+    name: 'Plan C · Beach or bay',
     detail:
-      'Qishuiwan beach with the stroller parked at the edge: free, closer to the water, and the local family choice. No shade, no toilets and soft sand — only with a second adult free to carry the baby and the toddler separately.',
-  },
-  {
-    id: 'remote-calm',
-    name: 'Plan C · Remote and calm',
-    detail:
-      'Watch from Gaolong Bay near the hotel, ~16 km away: no traffic, no crowd, beach and breakfast after. Least spectacular, least stressful, and the version the children are most likely to remember fondly.',
+      'The sanctioned Shanhaitian exhibition-centre beach has the largest capacity (7,000 on the official list) and room for a mat and a shade tent; Qishuiwan is the local family favourite; Gaolong Bay, ~16 km out, is the calmest of all. More room to run, no toilets, softer sand — and the sound is noticeably gentler the further out you are.',
   },
 ];

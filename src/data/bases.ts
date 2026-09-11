@@ -22,15 +22,15 @@ export const BASES: Base[] = [
     id: 'longlou',
     name: 'Longlou Town',
     cn: '龙楼镇',
-    driveToLonglou: 'In town — 10–15 min to the perimeter',
-    beach: 'Rocky coast, small bays',
-    toddlerFit: 58,
-    infantFit: 55,
-    hotelPerNight: '¥400–1,200 (spikes on launch dates)',
-    priceBand: 800,
-    verdict: 'The only base that removes the launch-morning drive entirely — but it is a small town that empties out between launches.',
-    good: 'Walk to viewing areas, launch atmosphere, no traffic risk on the morning itself.',
-    caveat: 'Limited hotel quality and food choice; prices on launch nights can triple; check that the room is actually available and that the rooftop view is included.',
+    driveToLonglou: 'In town — the sanctioned points are 5–15 min away',
+    beach: 'Shanhaitian and Tongguling bays; Stone Park is rocky',
+    toddlerFit: 62,
+    infantFit: 66,
+    hotelPerNight: '¥250–600; up to ~¥1,200 at the Hilton on launch nights',
+    priceBand: 700,
+    verdict: 'The only base that removes the launch-morning drive, and the smartest single decision in this plan if we can book a room at one of the two hotels that are themselves official viewing points.',
+    good: 'Walk or take a lift to a sanctioned viewing point; launch atmosphere; 90–95% occupancy means the town is genuinely busy, which the 3-year-old will love.',
+    caveat: 'Locals call launch nights 一房难求 — one room, hard to find. Prices spike, quality varies between homestays, and the town is quiet between launches. Prices here are unverified estimates.',
     confidence: 'estimate',
   },
   {
@@ -88,9 +88,9 @@ export const BASES: Base[] = [
     infantFit: 88,
     hotelPerNight: '¥400–1,500',
     priceBand: 800,
-    verdict: 'Our pick for the post-launch holiday: quiet, excellent resorts, a shorter drive from Wenchang than Sanya.',
-    good: 'Wide quiet sand, family resorts with kids’ pools, botanical gardens at Xinglong nearby, and no Sanya crowds.',
-    caveat: 'Thin restaurant choice outside the resorts; September surf and jellyfish mean checking before swimming.',
+    verdict: 'Our pick for the post-launch holiday: quiet, excellent resorts, and a shorter drive from Wenchang than Sanya — with the calm, shallow water an 8-month-old needs.',
+    good: 'Shimei Bay is calm and shallow, which is exactly what an 8-month-old needs; family resorts with kids’ pools, botanical gardens at Xinglong nearby, and none of the Sanya crowds.',
+    caveat: 'Thin restaurant choice outside the resorts. Riyue Bay, 20 minutes away, is a surf beach — good to watch, wrong water for a baby.',
     confidence: 'estimate',
   },
   {
@@ -103,7 +103,7 @@ export const BASES: Base[] = [
     infantFit: 87,
     hotelPerNight: '¥400–1,400',
     priceBand: 750,
-    verdict: 'A quieter, cheaper alternative to Sanya with similar water quality — good for the last two nights before flying out of SYX.',
+    verdict: 'Calm, clear, shallow water and a quieter alternative to Sanya — the best swimming for an infant, and only ~50 min from SYX for the flight home.',
     good: 'Calm water, resort facilities for children, and only ~50 min from SYX.',
     caveat: 'More spread out; you will use the car for everything.',
     confidence: 'estimate',
@@ -241,9 +241,19 @@ export const ACTIVITIES: Activity[] = [
 
 export const FAMILY_LOGISTICS = [
   {
+    title: 'Typhoons and rain',
+    detail:
+      'Mid-September is both the peak of the typhoon season and the wettest stretch of the year: Hainan averages about two direct landfalls annually, with August and September carrying the largest share, and this season is forecast to be stronger than normal. Expect rain on most days (225–258 mm across 14–16 rainy days), an extreme UV index when the sun is out, and a real chance of a ferry or flight shutdown. The strait ferries and both airports are the first things suspended under orange or red warnings. Buy flexible tickets and keep one spare day before the launch.',
+  },
+  {
+    title: 'Sea temperature and swimming',
+    detail:
+      'September sea-surface temperatures sit around 29 °C — genuinely warm, which is good news for a toddler and means no wetsuit worries. The things to watch are surf and jellyfish: exposed south-facing beaches like Riyue Bay and parts of Haitang Bay are surf beaches and the wrong water for an 8-month-old, while Clearwater Bay and Shimei Bay are calmer.',
+  },
+  {
     title: 'Child restraint law',
     detail:
-      'Chinese law requires child safety seats for young children in most provinces, and Hainan rental companies are used to providing them — but availability is not guaranteed. Reserve both seats (a toddler seat and an infant carrier) in writing, and inspect them at pick-up before leaving the lot.',
+      'Chinese law requires guardians to use child restraints for young children; the revised minors-protection law took effect in June 2021, but enforcement and specific provincial rules vary and Hainan’s exact requirement could not be verified. Rental fleets rarely include seats by default, so treat "we will get one at the desk" as a plan that can fail.',
   },
   {
     title: 'Baby supplies',
@@ -259,10 +269,5 @@ export const FAMILY_LOGISTICS = [
     title: 'Health',
     detail:
       '文昌市人民医院 (Wenchang People’s Hospital) is the nearest general hospital to the launch area; Haikou and Sanya have the island’s largest hospitals. Check your travel insurance covers infants and that the policy is valid for the dates — and note the nearest clinic to each hotel before you need it.',
-  },
-  {
-    title: 'Typhoons',
-    detail:
-      'Mid-September is the peak of the typhoon season. Storms usually announce themselves several days out, which is exactly when flexible bookings matter. If a typhoon warning is issued, the strait ferries stop first, flights second.',
   },
 ];

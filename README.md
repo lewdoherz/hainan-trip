@@ -78,9 +78,23 @@ It then appears in the Costs tab automatically, and any option's `costLines` fun
 
 **Conventions:** costs are round trip (what the family actually pays); travel times are the outbound journey only (the leg that has to land before the launch), with overnight sleep reported separately as "awake travel time".
 
+## What the app currently concludes
+
+With the default weights and defaults, the ranking is:
+
+| Option | Score | Wins |
+| --- | --- | --- |
+| Fly XMN → HAK + rent | 81 | Best overall, Fastest, Easiest with toddlers |
+| Fly in to Haikou, out of Sanya (one-way rental) | 80 | — (a very close second; the one-way fee is the whole gap) |
+| Fly to Sanya + rent | 72 | — |
+| Drive + ferry (own car) | 64 | Cheapest, Most flexible |
+| HSR + rail-ferry sleeper + rent | 55 | — |
+
+That is a 2-point gap between the top two, which is noise — the app is meant to be argued with. Switching the preset to **Cheapest** still leaves the Haikou flight on top (a two-day drive buys almost nothing once the ferry, tolls, hotels and time are counted), and **Toddler first** widens the flight's lead. The genuine decision is *which airport and whether the car is one-way*, and the app lets you settle that with sliders rather than vibes.
+
 ## Confidence labels
 
-Every figure is labelled **Verified**, **Estimate** or **Assumption**, and the labels are visible in the UI. Verified means it comes from a named source listed in the Sources tab — for example the ferry fare of ¥415.50 for a car plus driver, children under 1.2 m travelling free, the 1,183 km / ¥638-toll drive to Xuwen Port, the absence of any through train from Xiamen, and the ¥27 / 28-minute Haikou East → Wenchang HSR hop.
+Every figure is labelled **Verified**, **Estimate** or **Assumption**, and the labels are visible in the UI. Verified means it comes from a named source listed in the Sources tab — for example the launch window corroborated by two airspace-notice databases, the ferry fare of ¥415.50 for a car plus driver, children under 1.2 m travelling free, the 1,183 km / ¥638-toll drive to Xuwen Port, the absence of any through train from Xiamen, the ¥27 / 28-minute Haikou East → Wenchang HSR hop, and the airlines' child-fare and baggage rules.
 
 **No figure here is a live quote.** Airfare and rental-rate pages block automated access, so those remain researched ranges by design — replace them in the Costs tab.
 
@@ -88,8 +102,8 @@ Every figure is labelled **Verified**, **Estimate** or **Assumption**, and the l
 
 These are the items where the app deliberately cannot promise anything:
 
-1. **The launch date and time.** The 17 September 2026 08:30–08:54 CST window could not be confirmed against an official schedule. Check CNSA / CMSA / CASC notices and the Wenchang government channel (文昌发布).
-2. **Launch-day access.** Road closures around 龙楼镇, whether official viewing tickets exist for this mission, and how early the perimeter closes.
+1. **The launch.** The 17 September 2026 08:30 CST window (08:25–08:54) is corroborated by two independent airspace-notice databases and by Wenchang no-fly notice 文府函〔2026〕441号 — but there is **no official mission announcement** from CMSA, CNSA or CASC, the payload identity is flagged as uncertain, and the same notice trail shows the window already slipped five days. Re-check the notice, and check CNSA / CMSA / CASC and the Wenchang government channel (文昌发布).
+2. **Launch-day access and viewing tickets.** Whether tickets are on sale for this mission, child and infant ticket rules, road closures around 龙楼镇, parking and how early the perimeter closes.
 3. **Ferry booking.** Sailings, prices and the check-in cut-off change; confirm in the 琼州海峡轮渡管家 mini-program. Reservation is mandatory — there is no ticket office at the port, and the presale window is 15 days.
 4. **Airfares** for the exact dates, including infant and child tickets and baggage rules.
 5. **Rental rates**, the one-way drop-off fee, and — critically — whether an infant car seat can actually be reserved.

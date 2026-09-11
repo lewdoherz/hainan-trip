@@ -106,6 +106,11 @@ export function Plan() {
         />
         <div className="ctable-wrap">
           <table className="ctable ctable--bases">
+            <caption className="ctable__caption">
+              Drive times, fit scores and price bands are our estimates and judgements, not verified quotes — hotel
+              booking sites could not be read from this build environment. The launch-night occupancy figure (90–95%)
+              and the official viewing-point list are verified.
+            </caption>
             <thead>
               <tr>
                 <th>Base</th>
