@@ -21,29 +21,40 @@ export function Launch() {
       <section className="launch-hero">
         <div className="launch-hero__left">
           <div className="eyebrow">Launch</div>
-          <h1 className="launch-hero__title">Wenchang rocket launch</h1>
+          <h1 className="launch-hero__title">{TRIP.launch.mission}</h1>
           <p className="launch-hero__sub">
-            {TRIP.launch.site} · {TRIP.launch.siteArea}
+            {TRIP.launch.site} · {TRIP.launch.pad}
           </p>
           <div className="launch-hero__date">
             <span>{TRIP.launch.dateLabel}</span>
             <span className="launch-hero__time">{TRIP.launch.timeLabel}</span>
           </div>
           <div className="launch-hero__pills">
-            <Pill tone="warn">Tentative window</Pill>
-            <Pill tone="sand">Last checked for sources: {LAUNCH_STATUS.verifiedAt}</Pill>
-            <Pill tone="sand">Sunrise ~06:20 CST</Pill>
+            <Pill tone="good">Date corroborated</Pill>
+            <Pill tone="warn">Not officially announced</Pill>
+            <Pill tone="sand">Window 08:25–08:54 · T-0 08:30</Pill>
+            <Pill tone="sand">Last checked: {LAUNCH_STATUS.verifiedAt}</Pill>
           </div>
         </div>
         <div className="launch-hero__right">
           <Countdown />
-          <p className="launch-hero__note">Countdown to the planned 08:30 CST window on 17 September 2026.</p>
+          <p className="launch-hero__note">Countdown to the listed 08:30 CST lift-off on 17 September 2026.</p>
         </div>
       </section>
 
-      <Callout tone="danger" title="Read this before booking anything">
-        {LAUNCH_STATUS.detail}
-      </Callout>
+      <div className="grid grid--2">
+        <Callout tone="warn" title="How solid is this date?">
+          {LAUNCH_STATUS.detail}
+        </Callout>
+        <section className="panel panel--pad">
+          <h3 className="panel__title">What could still change</h3>
+          <ul className="bullets bullets--bad">
+            {LAUNCH_STATUS.caveats.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+        </section>
+      </div>
 
       <div className="grid grid--2">
         <section className="panel panel--pad">

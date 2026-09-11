@@ -39,6 +39,7 @@ export const ITINERARIES: ItineraryVariant[] = [
           'Morning at 文昌航天科普中心 (space science centre) — air-conditioned, toddler-friendly, and it explains what the children are about to see',
           'Afternoon at the hotel pool or the beach; nap for both children',
           'Reconnaissance drive to Longlou to see where we will park on launch morning, if time allows',
+          'Confirm the viewing tickets and the no-fly notice window one last time; Longlou runs at 90–95% occupancy on launch nights, so do not plan to improvise',
           'Pack the launch bag the night before; charge everything; set an alarm for 04:30',
         ],
         toddler: 'This is the calm day. Do not schedule anything that needs a car at nap time.',
@@ -52,12 +53,14 @@ export const ITINERARIES: ItineraryVariant[] = [
         drive: '~35–45 min to Longlou',
         plan: [
           '04:45 wake and dress the children; feed and change the baby before leaving',
-          '05:15 leave the hotel; park outside the controlled zone and walk or shuttle in',
-          '06:00 set up in shade — let the 3-year-old run while it is still cool',
-          '08:15 ear defenders on, children held; 08:30–08:54 launch window opens',
-          'Do not rush the exit: breakfast and shade for an hour while the traffic drains',
+          '05:15 leave the hotel for Longlou — about 40 minutes from Wenchang, or 15 from Longlou itself',
+          '06:00 in place at the ticketed viewing platform (文昌航天观礼中心 / 瑶光观礼平台, ~2 km from the pad) — reserved seats mean no queueing for position',
+          '06:29 sunrise; set up shade, water and ear defenders, and let the 3-year-old run while it is still cool',
+          '08:20 ear defenders on, children held; the window opens at 08:25 with lift-off listed at 08:30',
+          'Do not rush the exit: second breakfast in the shade while the traffic drains for an hour',
         ],
-        toddler: 'Ear defenders for both children, water, shade, and a carrier for the baby. Expect an unsettled afternoon — plan a quiet hotel evening.',
+        toddler:
+          'Ear defenders for both children, water, shade, and a carrier for the baby. If either child is overwhelmed, watch from inside the car with the windows up — that is a perfectly good outcome. Expect an unsettled afternoon and plan a quiet hotel evening.',
         flexibility: 'fixed',
       },
       {

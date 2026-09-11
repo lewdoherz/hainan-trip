@@ -70,7 +70,7 @@ function driveTimeline(a: Assumptions): TimelineGroup[] {
           kind: 'wait',
           minutes: { assumption: 'ferryWait' },
           confidence: 'verified',
-          note: 'Full online reservation is mandatory — there is no ticket office at the port, and the gate closes 20 minutes before departure.',
+          note: 'Full online reservation is mandatory — there is no ticket office at the port, and the gate closes 20 minutes before departure. Dedicated car-only sailings have run at 11:05 and 14:05 from Xuwen; 海安新港 → 秀英港 is the slower overflow route, and 徐闻北港 → 海口南港 is the railway ferry.',
         },
         {
           id: 'ferry-cross',
@@ -227,10 +227,12 @@ export const TRANSPORT_OPTIONS: TransportOption[] = [
     practical: [
       { label: 'Child seats', value: 'Our own, fitted at home — nothing to rent or trust', tone: 'good' },
       { label: 'Luggage', value: 'Unlimited; whatever fits in the car', tone: 'good' },
+      { label: 'Best port pairing', value: 'Xuwen Port → Haikou New Port: 12 nm, ~60 min, up to 71 sailings a day, 24 h', tone: 'good' },
       { label: 'Booking', value: 'Reservation is mandatory online, 15 days ahead; no ticket office at the port', tone: 'warn' },
       { label: 'Ferry crossing', value: '~60 min at sea, 2.5–4 h door to door; passengers leave the car', tone: 'warn' },
+      { label: 'Fuel tip', value: 'Fill up in Xuwen — Hainan fuel carries the toll levy, but island roads are toll-free', tone: 'good' },
       { label: 'Weather risk', value: 'Strait closes at force-9 wind and in fog — September is typhoon season', tone: 'bad' },
-      { label: 'Arrival condition', value: 'Four travel days and 2,400 km before the holiday starts', tone: 'bad' },
+      { label: 'Arrival condition', value: 'Four travel days and ~2,400 km before the holiday starts', tone: 'bad' },
     ],
     pros: [
       'Child seats, stroller, cot and the whole luggage load travel once, untouched',
@@ -278,7 +280,7 @@ export const TRANSPORT_OPTIONS: TransportOption[] = [
     accent: '#c2553f',
     tagline: 'A ~1 h 40 m flight, then Wenchang is barely 1.5 hours up the coast.',
     verdict:
-      'Haikou is the right airport: flights from Xiamen take about 1 hour 40 minutes with roughly seven departures a day, the airport has its own HSR station for a 10-minute run to Haikou East, and Wenchang is ~100 km up the toll-free east-coast expressway. The whole outbound journey becomes one morning instead of two or three days. The price is luggage: two child seats, a stroller and a cot become a baggage problem rather than a boot full of stuff.',
+      'Haikou is the right airport: the flight from Xiamen takes 1 h 40 m – 2 h 25 m with 19 weekly departures across Xiamen Airlines, Hainan Airlines and China Southern, the airport has its own HSR station for a 10-minute run to Haikou East, and Wenchang is ~100 km up the toll-free east-coast expressway. The whole outbound journey becomes one morning instead of two or three days. The price is luggage: two child seats, a stroller and a cot become a baggage problem rather than a boot full of stuff.',
     transfers: 3,
     staticScores: {
       family: {
@@ -412,7 +414,9 @@ export const TRANSPORT_OPTIONS: TransportOption[] = [
       { label: 'Transfers', value: '3 (home→airport, airport→car, car→hotel)', tone: 'neutral' },
       { label: 'Arrival condition', value: 'Rested, with two clear days before the launch', tone: 'good' },
       { label: 'Airport → Wenchang', value: '~100 km, 1.5 h by car; 10-min HSR to Haikou East', tone: 'good' },
-      { label: 'Flights per day', value: '~7 XMN → HAK departures', tone: 'good' },
+      { label: 'Flights', value: '19 weekly: Xiamen Airlines 8, Hainan Airlines 7, China Southern 4', tone: 'good' },
+      { label: 'Baggage', value: '20 kg each for adults and children; one folding stroller free, even for the infant', tone: 'neutral' },
+      { label: 'Excess baggage', value: 'About ¥25/kg on this distance band — set the extra-bag line in Costs if needed', tone: 'warn' },
     ],
     pros: [
       'The outbound journey is one morning instead of two or three days',
@@ -438,7 +442,7 @@ export const TRANSPORT_OPTIONS: TransportOption[] = [
       'Flight cancelled: the airline rebooks on the next XMN → HAK departure. Travelling on the 15th for a 17th launch gives a full buffer day.',
       'Launch slips: the rental car means we can extend and move anywhere on the island without rebooking transport.',
       'Stroller or bags delayed: buy a cheap stroller in Haikou rather than waiting at the airport — they are widely available.',
-      'HAK sold out or absurdly priced: the same plan works into Sanya with a three-hour drive, or Boao if flights exist.',
+      'HAK sold out or absurdly priced: the same plan works into Sanya with a three-hour drive. Boao (BAR) is closest to Wenchang, but it has had no direct Xiamen service since Hebei Airlines withdrew in January 2023, so it is not a real alternative.',
     ],
     confidence: 'estimate',
   },
@@ -452,9 +456,9 @@ export const TRANSPORT_OPTIONS: TransportOption[] = [
     modeLabel: 'Fly + rent',
     vehicle: 'Rental car (Sanya)',
     accent: '#d99b34',
-    tagline: 'Best resorts, worst geography — Sanya is on the wrong end of the island.',
+    tagline: 'Best resorts, worst geography — and a thinner flight schedule.',
     verdict:
-      'Only worth it if the holiday matters more than the launch. Sanya has the island’s best beaches and family resorts, but it is roughly 250 km and three hours from Wenchang, which means either a long drive on launch morning or a separate Wenchang hotel night. Treat it as a holiday-first plan, or as the second half of a two-base trip with a one-way rental.',
+      'Only worth it if the holiday matters more than the launch. Sanya has the island’s best beaches and family resorts, but it is roughly 250 km and three hours from Wenchang — and the route from Xiamen is flown only by Xiamen Airlines, one or two times a day, which means fewer cheap seats and less resilience than Haikou. Treat it as a holiday-first plan, or as the second half of a two-base trip with a one-way rental.',
     transfers: 3,
     staticScores: {
       family: {

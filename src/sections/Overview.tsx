@@ -35,24 +35,29 @@ export function Overview({ onOpenOption }: { onOpenOption: (id: string) => void 
 
         <div className="hero__launch">
           <div className="hero__launch-head">
-            <span className="hero__launch-tag">Wenchang rocket launch</span>
-            <Pill tone="warn">Tentative</Pill>
+            <span className="hero__launch-tag">{TRIP.launch.mission}</span>
+            <Pill tone="warn">Not officially announced</Pill>
           </div>
           <div className="hero__launch-date">{TRIP.launch.dateLabel}</div>
           <div className="hero__launch-time">{TRIP.launch.timeLabel}</div>
           <Countdown />
           <p className="hero__launch-note">
-            Countdown to the planned window. {LAUNCH_STATUS.detail.split('—')[0].trim()}
+            Window 08:25–08:54 CST, lift-off listed at 08:30 · {TRIP.launch.pad}
+          </p>
+          <p className="hero__launch-note">
+            Date corroborated by two airspace-notice databases and an official Wenchang no-fly notice — but the
+            window already moved five days once, so treat it as a target.
           </p>
           <span className="hero__verified">Last checked for sources: {LAUNCH_STATUS.verifiedAt}</span>
         </div>
       </section>
 
-      <Callout tone="danger" title="The launch date is a target, not a confirmed schedule">
-        Wenchang launch dates are published late and move often — weather scrubs are routine. This app could not
-        confirm the 17 September 2026 window against an official schedule (no working search in the build
-        environment). Verify it and re-check the launch-day rules before buying anything non-refundable. All launch
-        details live in the <strong>Launch</strong> tab.
+      <Callout tone="warn" title="Corroborated, but not officially announced — and the window already moved once">
+        Two independent airspace-notice databases and an official Wenchang no-fly notice all point to the same
+        morning, in a window of 08:25–08:54 CST. But CMSA, CNSA and CASC have published nothing, the payload identity
+        is flagged as uncertain, and notice 文府函〔2026〕441号 replaced an earlier window five days earlier than this
+        one. Book refundable rooms and never fly home the day after the launch. Full evidence and caveats live in the{' '}
+        <strong>Launch</strong> tab.
       </Callout>
 
       <RecommendationBanner
