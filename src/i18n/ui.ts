@@ -1,0 +1,478 @@
+import type { Bi } from '../data/types';
+
+/**
+ * Every piece of interface text, in both languages. Data-module prose lives in
+ * src/data; this file covers the chrome, labels and generated sentences.
+ */
+export const UI = {
+  // ---------------------------------------------------------------- shell ---
+  navOverview: { en: 'Overview', zh: '总览' },
+  navCompare: { en: 'Compare', zh: '对比' },
+  navRoutes: { en: 'Routes', zh: '路线' },
+  navCosts: { en: 'Costs', zh: '费用' },
+  navLaunch: { en: 'Launch', zh: '发射' },
+  navPlan: { en: 'Hainan plan', zh: '海南行程' },
+  navSources: { en: 'Sources', zh: '资料来源' },
+  navAria: { en: 'Sections', zh: '页面导航' },
+  brandMeta: {
+    en: '{date} · launch window tentative · {nights} nights in Hainan',
+    zh: '{date} · 发射时间待定 · 海南 {nights} 晚',
+  },
+  footerText: {
+    en: 'A family decision aid, not a booking engine. Prices and durations are estimates or editable assumptions — confirm them with the ferry operator, the airlines, the rental company and the official launch channels before spending money.',
+    zh: '这是一个家庭决策辅助工具，不是预订平台。价格与时长均为估算值或可调整的假设，付款前请向轮渡公司、航空公司、租车公司及官方发射信息渠道逐一核实。',
+  },
+  footerCta: { en: 'See sources and verification status', zh: '查看资料来源与核实状态' },
+  langLabel: { en: 'Language', zh: '语言' },
+  langSwitch: { en: 'Switch language', zh: '切换语言' },
+
+  // ------------------------------------------------------------ countdown ---
+  cdDays: { en: 'days', zh: '天' },
+  cdHours: { en: 'hours', zh: '小时' },
+  cdMinutes: { en: 'minutes', zh: '分钟' },
+  cdSeconds: { en: 'seconds', zh: '秒' },
+  cdPassed: { en: 'Launch window reached — check the live schedule', zh: '发射窗口已到 —— 请查看最新官方安排' },
+
+  // ---------------------------------------------------------------- cards ---
+  score: { en: 'score', zh: '综合得分' },
+  cost: { en: 'Cost', zh: '费用' },
+  doorToDoor: { en: 'Door to door', zh: '全程耗时' },
+  awakeOfIt: { en: '{d} of it awake', zh: '其中清醒 {d}' },
+  estimateSuffix: { en: 'estimate', zh: '估算' },
+  toddlerComfort: { en: 'Toddler comfort', zh: '带幼儿舒适度' },
+  flexibility: { en: 'Flexibility', zh: '灵活度' },
+  lowStress: { en: 'Low stress', zh: '低压力' },
+  reliability: { en: 'Reliability', zh: '可靠性' },
+  noTransfers: { en: 'No transfers', zh: '无需换乘' },
+  transfersCount: { en: '{n} transfer', zh: '{n} 次换乘' },
+  transfersCountPlural: { en: '{n} transfers', zh: '{n} 次换乘' },
+  viewDetails: { en: 'View details →', zh: '查看详情 →' },
+
+  // ----------------------------------------------------------- highlights ---
+  bestOverall: { en: 'Best overall', zh: '综合最优' },
+  cheapest: { en: 'Cheapest', zh: '最省钱' },
+  fastest: { en: 'Fastest', zh: '最省时' },
+  easiest: { en: 'Easiest with toddlers', zh: '带幼儿最轻松' },
+  mostFlexible: { en: 'Most flexible', zh: '最灵活' },
+
+  // ------------------------------------------------------------ confidence ---
+  verified: { en: 'Verified', zh: '已核实' },
+  estimate: { en: 'Estimate', zh: '估算' },
+  assumption: { en: 'Assumption', zh: '假设' },
+  verifiedHint: { en: 'Checked against a named source — see Sources.', zh: '已对照具名来源核实，详见“资料来源”。' },
+  estimateHint: {
+    en: 'Best researched range; indicative only — confirm before booking.',
+    zh: '经过调研的区间范围，仅供参考，预订前请核实。',
+  },
+  assumptionHint: {
+    en: 'A planning choice, not a researched fact. Edit it to match reality.',
+    zh: '这是我们的规划设定，并非调研结论，请按实际情况调整。',
+  },
+
+  // ---------------------------------------------------------- comparison ---
+  criterion: { en: 'Criterion', zh: '对比项目' },
+  groupHardNumbers: { en: 'The hard numbers', zh: '硬指标' },
+  groupHardNumbersNote: {
+    en: 'Cost and time come from the live calculator — edit assumptions on the Costs tab.',
+    zh: '费用与时间来自实时计算器，可在“费用”页调整假设。',
+  },
+  groupScores: { en: 'Family scores (0–100, weighted by your sliders)', zh: '家庭评分（0–100，按你的权重设置加权）' },
+  weightedScore: { en: 'Weighted score', zh: '加权总分' },
+  wins: { en: 'Wins', zh: '获得标签' },
+  rowCost: { en: 'Total transport cost', zh: '交通总花费' },
+  rowCostHint: {
+    en: 'Transport, road hotels and ferry/rental extras. Excludes Hainan resort nights.',
+    zh: '含交通、途中住宿与轮渡/租车附加费用，不含海南度假酒店住宿。',
+  },
+  rowTotal: { en: 'Door-to-door time', zh: '全程总耗时' },
+  rowTotalHint: {
+    en: 'Home to hotel, including waits, transfers and overnight sleep.',
+    zh: '从家到酒店，包含等待、换乘与夜间休息时间。',
+  },
+  rowAwake: { en: 'Awake travel time', zh: '清醒在途时间' },
+  rowAwakeHint: {
+    en: 'Everything except sleeping in a bed — the part that actually wears the family down.',
+    zh: '除床上睡眠以外的全部时间 —— 真正消耗一家人精力的部分。',
+  },
+  rowTransfers: { en: 'Transfers / hand-overs', zh: '换乘 / 交接次数' },
+  rowTransfersHint: {
+    en: 'Each one means repacking, queueing and carrying children plus luggage again.',
+    zh: '每一次都意味着重新打包、排队，并再次搬运孩子和行李。',
+  },
+
+  // --------------------------------------------------------------- weights ---
+  quickPresets: { en: 'Quick presets', zh: '快捷预设' },
+  resetWeights: { en: 'Reset weights', zh: '恢复默认权重' },
+  calculated: { en: 'calculated', zh: '自动计算' },
+  weightAria: { en: '{label} weight', zh: '{label} 权重' },
+  weightsFoot1: {
+    en: 'Weights are relative — the percentages always add to 100%, so moving one slider rebalances the rest.',
+    zh: '权重是相对的：百分比始终合计为 100%，因此拖动一个滑块会自动重新分配其余项。',
+  },
+  weightsFoot2: {
+    en: 'Cost and Travel time are scored against the other options, so they move whenever you edit a price or a duration.',
+    zh: '“费用”和“在途时间”是相对其他方案评分的，因此每当修改价格或时长，这两项都会随之变化。',
+  },
+  presetBalanced: { en: 'Balanced', zh: '均衡' },
+  presetBalancedHint: {
+    en: 'Our starting point — comfort first, but cost and time still matter.',
+    zh: '我们的默认设置：舒适优先，但费用与时间同样重要。',
+  },
+  presetToddler: { en: 'Toddler first', zh: '幼儿优先' },
+  presetToddlerHint: {
+    en: 'Prioritise short awake days, few transfers and low stress above price.',
+    zh: '优先考虑行程短、换乘少、压力小，价格排在后面。',
+  },
+  presetBudget: { en: 'Cheapest', zh: '最省钱' },
+  presetBudgetHint: { en: 'Cost dominates; comfort and speed become tie-breakers.', zh: '以费用为主，舒适度与速度作为次要考量。' },
+  presetFast: { en: 'Shortest days', zh: '最短行程' },
+  presetFastHint: { en: 'Minimise door-to-door and awake travel time above all.', zh: '以最大限度缩短总耗时与清醒在途时间为首要目标。' },
+  presetFlex: { en: 'Max flexibility', zh: '最灵活' },
+  presetFlexHint: { en: 'Whatever gives the most freedom to change plans once we are there.', zh: '优先选择到达后最能自由更改计划的方案。' },
+
+  // ----------------------------------------------------------- assumptions ---
+  assumeChangedCount: { en: '{n} of {total} values changed from our defaults', zh: '{total} 项中有 {n} 项已偏离默认值' },
+  resetAll: { en: 'Reset all', zh: '全部恢复默认' },
+  backToDefault: { en: 'Back to default ({value})', zh: '恢复默认值（{value}）' },
+  unitSquareMetre: { en: '×', zh: '×' },
+
+  // ----------------------------------------------------------------- costs ---
+  costsTitle: { en: 'Edit the assumptions, not the conclusions', zh: '修改假设，而不是结论' },
+  costsLede: {
+    en: 'Defaults are researched ranges, not quotes. Replace them with real numbers from the ferry booking app, the airlines and the rental company — the comparison updates as you type.',
+    zh: '默认值是调研区间，并非实际报价。请用轮渡订票小程序、航空公司和租车公司的真实数字替换 —— 对比结果会随输入即时更新。',
+  },
+  assumptionsTitle: { en: 'Every price the model uses', zh: '模型使用的全部价格' },
+  assumptionsLede: {
+    en: 'Grouped so you can work through them in the order you would actually book things: ferry, flights, rental, rail, then the family-specific buffers.',
+    zh: '按实际预订顺序分组：轮渡、机票、租车、铁路，最后是家庭相关的缓冲时间。',
+  },
+  costsPickerHeading: { en: 'Which option’s costs?', zh: '查看哪个方案的费用？' },
+  lineItem: { en: 'Line item', zh: '费用项目' },
+  amount: { en: 'Amount', zh: '金额' },
+  basis: { en: 'Basis', zh: '依据' },
+  totalOf: { en: 'Total · {name}', zh: '合计 · {name}' },
+  costsFootnote: {
+    en: 'Transport only — it includes road hotels while driving, ferry tickets, airfares, rental and airport access, but not Hainan resort nights, food or tickets. Every line is driven by the assumptions above.',
+    zh: '仅含交通费用：自驾途中住宿、轮渡票、机票、租车及往返机场费用；不含海南度假酒店、餐饮和门票。每一项都由上方的假设值驱动。',
+  },
+  cheapestOption: { en: 'Cheapest option', zh: '最省钱的方案' },
+  mostExpensive: { en: 'Most expensive', zh: '最贵的方案' },
+  spreadBetween: { en: 'Spread between options', zh: '方案之间的差额' },
+  spreadSub: { en: 'What the decision is worth', zh: '这就是这个决策的价值' },
+  valuesChanged: { en: 'Values changed', zh: '已修改的数值' },
+  ofDefaults: { en: 'of {total} defaults', zh: '共 {total} 项默认值' },
+  tripTotalsNow: { en: 'Trip totals right now', zh: '当前行程合计' },
+  resetEverything: { en: 'Reset everything', zh: '全部重置' },
+  optionCol: { en: 'Option', zh: '方案' },
+  roundTripCost: { en: 'Round-trip cost', zh: '往返费用' },
+  outboundTime: { en: 'Outbound door-to-door', zh: '去程全程耗时' },
+  whatIsNotIncluded: { en: 'What is not included', zh: '不包含的项目' },
+  whatIsNotIncludedText: {
+    en: 'Hainan resort nights, food, launch-viewing tickets, travel insurance and attractions. This tab answers one question only: what does it cost to get there and back with a car available?',
+    zh: '海南度假酒店、餐饮、发射观礼门票、旅行保险和景点门票。本页只回答一个问题：带上可用车辆，往返需要多少钱？',
+  },
+  changedValues: { en: 'Changed values', zh: '已修改的数值' },
+  changedValuesEmpty: {
+    en: 'Nothing changed yet — the app is using its researched defaults. The values most worth replacing first are the airfare, the ferry vehicle ticket and the rental daily rate.',
+    zh: '尚无修改，当前使用调研得出的默认值。最值得优先替换的是机票、轮渡车辆票价和租车日租金。',
+  },
+
+  // ---------------------------------------------------------------- routes ---
+  routesEyebrow: { en: 'Routes', zh: '路线' },
+  routesTitle: { en: 'The journey, hour by hour', zh: '逐小时的行程安排' },
+  routesLede: {
+    en: 'Times are live: they recompute from the assumptions, so raising the ferry queue or the airport lead time immediately shows up here.',
+    zh: '时间是实时计算的：修改轮渡排队时间或机场提前量，这里会立刻反映变化。',
+  },
+  statRoundTrip: { en: 'Round-trip transport', zh: '往返交通费用' },
+  statEditOnCosts: { en: 'Edit on the Costs tab', zh: '可在“费用”页修改' },
+  statAsleep: { en: '{d} of it asleep', zh: '其中睡眠 {d}' },
+  statAwake: { en: 'Awake travel time', zh: '清醒在途时间' },
+  statAwakeSub: { en: 'The part that wears everyone down', zh: '最消耗全家人精力的部分' },
+  statTransfers: { en: 'Transfers', zh: '换乘次数' },
+  statTransfersSub: { en: 'Luggage and children moved again', zh: '需要再次搬运行李与孩子' },
+  legs: { en: 'Legs', zh: '行程分段' },
+  timeline: { en: 'Timeline', zh: '时间线' },
+  familyReality: { en: 'Family reality check', zh: '带娃现实检验' },
+  advantagesCosts: { en: 'Advantages and costs', zh: '优势与代价' },
+  inFavour: { en: 'In favour', zh: '支持理由' },
+  against: { en: 'Against', zh: '反对理由' },
+  ifPlanBreaks: { en: 'If the plan breaks', zh: '如果计划出问题' },
+  nothingBookable: { en: 'Nothing here is bookable', zh: '此处不可直接预订' },
+  nothingBookableText: {
+    en: 'This is a decision aid, not a booking tool. Every price and duration is an estimate or an editable assumption — confirm on the operator’s own channel before committing money.',
+    zh: '这是决策辅助工具，不是预订工具。所有价格与时长都是估算值或可调整的假设，付款前请在运营方官方渠道确认。',
+  },
+  scoreFewTransfers: { en: 'Few transfers', zh: '换乘少' },
+  scoreCarFreedom: { en: 'Car freedom', zh: '用车自由度' },
+  scoreBabyGear: { en: 'Baby gear capacity', zh: '婴儿装备装载量' },
+  mapLegendRoad: { en: 'road', zh: '公路' },
+  mapLegendFerry: { en: 'ferry', zh: '轮渡' },
+  mapLegendFlight: { en: 'flight', zh: '航班' },
+  mapLegendRail: { en: 'rail', zh: '铁路' },
+  mapNote: { en: 'Schematic, not to scale · launch site marked ★ {area}', zh: '示意图，非等比例 · ★ 为发射场：{area}' },
+  mapAria: { en: 'Schematic map of the travel routes from Xiamen to Hainan', zh: '厦门至海南各出行路线示意图' },
+  mapAmap: { en: 'Amap', zh: '高德' },
+  mapGoogle: { en: 'Google', zh: '谷歌' },
+
+  // ---------------------------------------------------------------- launch ---
+  launchEyebrow: { en: 'Launch', zh: '发射' },
+  dateCorroborated: { en: 'Date corroborated', zh: '日期已多方印证' },
+  notAnnounced: { en: 'Not officially announced', zh: '官方尚未公布' },
+  windowPill: { en: 'Window {window} · T-0 {t0}', zh: '窗口 {window} · 起飞 {t0}' },
+  lastChecked: { en: 'Last checked: {date}', zh: '最后核实：{date}' },
+  countdownNote: { en: 'Countdown to the listed {t0} CST lift-off on 17 September 2026.', zh: '距 2026 年 9 月 17 日北京时间 {t0} 起飞倒计时。' },
+  howSolid: { en: 'How solid is this date?', zh: '这个日期有多可靠？' },
+  whatCouldChange: { en: 'What could still change', zh: '仍可能变化的部分' },
+  confirmSchedule: { en: 'Confirm the schedule here', zh: '在此核实最新安排' },
+  beforeDeparture: { en: 'Before departure', zh: '出发前' },
+  practicalPicture: { en: 'The practical picture', zh: '实际情况' },
+  whereToWatch: { en: 'Where to watch', zh: '在哪里观看' },
+  viewingTitle: { en: 'Viewing spots, ranked for a family with a baby', zh: '按“带婴儿家庭”适配度排序的观礼点' },
+  viewingLede: {
+    en: 'Distances and prices are estimates to be confirmed locally; the family suitability notes are our judgement. Launch-day access rules change per mission.',
+    zh: '距离与价格需在当地确认；家庭适配度是我们的判断。每次任务的发射日管制规则都会变化。',
+  },
+  distanceFromPads: { en: 'Distance from pads', zh: '距发射工位' },
+  access: { en: 'Access', zh: '通行方式' },
+  ticket: { en: 'Ticket', zh: '门票' },
+  strollerYes: { en: 'Stroller OK', zh: '可推婴儿车' },
+  strollerPartial: { en: 'Partial — carrier recommended', zh: '部分路段 —— 建议用背带' },
+  strollerNo: { en: 'Not stroller-friendly', zh: '不适合婴儿车' },
+  launchMorning: { en: 'Launch morning', zh: '发射当天早晨' },
+  launchMorningTitle: { en: 'An 08:30 launch, planned backwards', zh: '8:30 发射的倒推安排' },
+  launchMorningLede: {
+    en: 'Built for a 3-year-old and an 8-month-old: late arrival is worse than an imperfect view, and shade beats proximity.',
+    zh: '为一个 3 岁和一个 8 个月大的孩子设计：宁可视野差一点，也不要迟到；遮阴比靠近更重要。',
+  },
+  noiseEars: { en: 'Noise, ears and the 8-month-old', zh: '噪音、耳朵与 8 个月大的宝宝' },
+  ifPostponed: { en: 'If it is postponed', zh: '如果延期' },
+
+  // ------------------------------------------------------------------ plan ---
+  planEyebrow: { en: 'Hainan plan', zh: '海南行程' },
+  planTitle: { en: 'Five to seven days, built around the launch', zh: '围绕发射安排的 5–7 天行程' },
+  planLede: {
+    en: 'The itinerary is deliberately front-loaded: two days of buffer before the launch, and the holiday afterwards. If the launch slips, the second half absorbs it.',
+    zh: '行程刻意前置：发射前两天留出缓冲，假期放在后面。若发射延期，后半段可以吸收掉。',
+  },
+  recommendedItinerary: { en: 'Recommended itinerary', zh: '推荐行程' },
+  recommendedFlag: { en: 'recommended', zh: '推荐' },
+  base: { en: 'Base', zh: '住宿地' },
+  driving: { en: 'Driving', zh: '车程' },
+  withChildren: { en: 'With the children', zh: '带娃提示' },
+  flexFixed: { en: 'Fixed date', zh: '固定日期' },
+  flexFlexible: { en: 'Flexible', zh: '可调整' },
+  flexBuffer: { en: 'Buffer day', zh: '缓冲日' },
+  ifLaunchMoves: { en: 'If the launch moves', zh: '如果发射时间变动' },
+  whereToStay: { en: 'Where to stay', zh: '住哪里' },
+  basesTitle: { en: 'Bases compared for this trip', zh: '适合本次行程的住宿地对比' },
+  basesLede: {
+    en: 'Judged only on how well each place serves a launch plus a toddler beach holiday — not as a general Hainan guide.',
+    zh: '仅从“发射 + 带幼儿海边度假”的角度评估，并非海南通用旅行指南。',
+  },
+  basesCaption: {
+    en: 'Drive times, fit scores and price bands are our estimates and judgements, not verified quotes — hotel booking sites could not be read from this build environment. The launch-night occupancy figure (90–95%) and the official viewing-point list are verified.',
+    zh: '车程、适配评分与价格区间均为我们的估算与判断，并非核实过的报价（本应用的构建环境无法读取酒店预订网站）。发射夜 90–95% 的入住率与官方观礼点名单为已核实信息。',
+  },
+  colBase: { en: 'Base', zh: '住宿地' },
+  colDriveToLonglou: { en: 'Drive to Longlou', zh: '到龙楼车程' },
+  colToddlerFit: { en: 'Toddler fit', zh: '幼儿适配' },
+  colInfantFit: { en: 'Infant fit', zh: '婴儿适配' },
+  colHotel: { en: 'Family room / night', zh: '家庭房 / 晚' },
+  activitiesEyebrow: { en: 'Things to actually do', zh: '值得一去的地方' },
+  activitiesTitle: { en: 'Activities that work with a 3-year-old and an 8-month-old', zh: '适合 3 岁与 8 个月大孩子的活动' },
+  activitiesLede: {
+    en: 'With a short honest note on the ones that do not, so we do not waste a day learning it the hard way.',
+    zh: '不适合的项目也如实标注，避免浪费一整天去亲身体验。',
+  },
+  fitGreat: { en: 'Great fit', zh: '非常适合' },
+  fitOk: { en: 'Worth it', zh: '值得一去' },
+  fitWait: { en: 'Skip this trip', zh: '这次先不去' },
+  logistics: { en: 'Family logistics worth knowing before you go', zh: '出发前值得了解的带娃事项' },
+  verifyLocally: { en: 'Verify locally', zh: '请在当地核实' },
+  verifyLocallyText: {
+    en: 'Child-restraint rules, hospital details and supply availability are the kind of thing that varies by district and changes over time. Treat these as planning notes, not legal or medical advice.',
+    zh: '儿童安全座椅法规、医院信息与物资供应情况会因地区和时间而变化。这些内容仅作行程规划参考，不构成法律或医疗建议。',
+  },
+
+  // --------------------------------------------------------------- sources ---
+  sourcesEyebrow: { en: 'Sources', zh: '资料来源' },
+  sourcesTitle: {
+    en: 'What is verified, what is estimated, and what still needs a phone call',
+    zh: '哪些已核实、哪些是估算、哪些还需打电话确认',
+  },
+  sourcesLede: {
+    en: 'This app is used for a real trip, so every claim is labelled and every source is listed with the date it was checked.',
+    zh: '这是为真实行程准备的，因此每条信息都有标注，每个来源都写明核实日期。',
+  },
+  howBuilt: { en: 'How this data was built', zh: '数据是如何整理的' },
+  honestLimitation: { en: 'Honest limitation', zh: '如实说明的局限' },
+  builtOn: { en: 'Built: {date}', zh: '整理日期：{date}' },
+  assumptionsInModel: { en: 'Assumptions in the model: {total}', zh: '模型中的假设项：{total}' },
+  countsBreakdown: { en: '{estimate} estimates, {assumption} assumptions, {verified} verified', zh: '{estimate} 项估算、{assumption} 项假设、{verified} 项已核实' },
+  whatToRecheck: { en: 'What to re-check, and where', zh: '需要重新核实的内容与渠道' },
+  confidenceLabels: { en: 'Confidence labels', zh: '可信度标注' },
+  legendVerified: { en: 'Confirmed against a named source, or a stable established fact.', zh: '已对照具名来源确认，或为稳定公认的事实。' },
+  legendEstimate: { en: 'A researched range that changes constantly — replace it with a live quote.', zh: '经调研但会不断变化的区间，请替换为实时报价。' },
+  legendAssumption: { en: 'A planning choice we made. If it is wrong, the comparison is wrong.', zh: '我们做的规划设定。若它不成立，对比结论也会出错。' },
+  sourcesCount: { en: '{n} sources', zh: '{n} 个来源' },
+  checkedOn: { en: 'checked {date}', zh: '核实于 {date}' },
+  noPublicSite: { en: 'No public website — see the note', zh: '无公开网站 —— 详见说明' },
+  editingData: { en: 'Editing the data', zh: '如何修改数据' },
+  editingDataText: {
+    en: 'Trip facts live in src/data/ — trip.ts (dates and places), assumptions.ts (every editable price and duration), and one file per transport option under data/options/. launch.ts, itinerary.ts, bases.ts and sources.ts cover the rest. Nothing else needs touching to update the app for a new launch window.',
+    zh: '行程数据位于 src/data/：trip.ts（日期与地点）、assumptions.ts（所有可编辑的价格与时长），以及 data/options/ 下每个出行方案一个文件；launch.ts、itinerary.ts、bases.ts、sources.ts 覆盖其余内容。更新到新的发射窗口时无需改动其他代码。',
+  },
+  kindOfficial: { en: 'Government / regulator', zh: '政府 / 监管机构' },
+  kindOperator: { en: 'Operator (airline, airport, port, rail, rental)', zh: '运营方（航空、机场、港口、铁路、租车）' },
+  kindPlatform: { en: 'Travel platform', zh: '旅行平台' },
+  kindSecondary: { en: 'News / secondary reporting', zh: '新闻 / 二手报道' },
+
+  // -------------------------------------------------------------- overview ---
+  overviewEyebrow: { en: 'Family travel decision dashboard', zh: '家庭出行决策面板' },
+  heroLede: {
+    en: 'Two adults, a 3-year-old and an 8-month-old. One rocket launch, one Hainan holiday, and a car that has to be waiting on the island either way. Everything below compares the realistic ways to get there — and what the day actually feels like with two small children.',
+    zh: '两位大人、一个 3 岁和一个 8 个月大的孩子。一次火箭发射、一次海南假期，而且无论如何都要在岛上有车。下面比较几种现实可行的出行方式，以及带着两个小孩时这一天究竟有多累。',
+  },
+  adultsPill: { en: '{n} adults', zh: '{n} 位大人' },
+  kidsPill: { en: '3-year-old + 8-month-old', zh: '3 岁 + 8 个月' },
+  nightsPill: { en: '{n} nights in Hainan', zh: '海南 {n} 晚' },
+  windowLabel: { en: 'Window {window} CST, lift-off listed at {t0}', zh: '北京时间窗口 {window}，起飞时间 {t0}' },
+  corroboratedNote: {
+    en: 'Date corroborated by two airspace-notice databases and an official Wenchang no-fly notice — but the window already moved five days once, so treat it as a target.',
+    zh: '该日期由两个航行通告数据库和一份官方文昌禁飞通告相互印证 —— 但窗口此前已推迟过五天，因此只能当作目标看待。',
+  },
+  launchCaveatTitle: { en: 'Corroborated, but not officially announced — and the window already moved once', zh: '多方印证，但官方尚未公布 —— 而且窗口已经变动过一次' },
+  launchCaveatText: {
+    en: 'Two independent airspace-notice databases and an official Wenchang no-fly notice all point to the same morning, in a window of 08:25–08:54 CST. But CMSA, CNSA and CASC have published nothing, the payload identity is flagged as uncertain, and notice 文府函〔2026〕441号 replaced an earlier window five days earlier than this one. Book refundable rooms and never fly home the day after the launch.',
+    zh: '两个独立的航行通告数据库和一份官方文昌禁飞通告都指向同一个早晨，窗口为北京时间 08:25–08:54。但中国载人航天工程办公室、国家航天局和中国航天科技集团均未发布消息，载荷信息也标注为不确定；而且文府函〔2026〕441号比原窗口提前了五天。请预订可免费取消的房间，也不要安排在发射次日就飞回家。',
+  },
+  launchCaveatTail: { en: 'Full evidence and caveats live in the Launch tab.', zh: '完整证据与注意事项见“发射”页。' },
+  shortlistEyebrow: { en: 'The shortlist', zh: '候选方案' },
+  shortlistTitle: { en: 'Five ways to get there', zh: '五种到达方式' },
+  shortlistLede: {
+    en: 'Estimates update live from the calculator — change a price or a weight and every card moves.',
+    zh: '估算值随计算器实时更新 —— 修改价格或权重，每张卡片都会随之变化。',
+  },
+  howToRead: { en: 'How to read this', zh: '如何理解本应用' },
+  howToReadTitle: { en: 'What this app does and does not claim', zh: '本应用给出什么、不给出什么' },
+  howToReadLede: { en: 'Nothing here is a live quote. Every number carries its own confidence label.', zh: '此处没有实时报价，每个数字都标注了可信度。' },
+  verifiedPanel: {
+    en: 'Taken from a named official or operator source listed in the Sources tab — the existence of the ferry, the launch site location, child-fare rules, the absence of a through train.',
+    zh: '来自“资料来源”页列出的官方或运营方来源：例如轮渡的存在、发射场位置、儿童票规则、没有直达列车等。',
+  },
+  estimatePanel: {
+    en: 'A researched range for something that changes constantly: fares, ferry prices, driving times. Shown as a default value you are expected to replace with a real quote in the Costs tab.',
+    zh: '对持续变动的项目给出的调研区间：机票、轮渡票价、车程等。作为默认值显示，建议在“费用”页替换为真实报价。',
+  },
+  assumptionPanel: {
+    en: 'A planning choice, not a fact — one hotel night on the road, two child seats, parking the car at XMN. Wrong assumption, wrong answer: edit it.',
+    zh: '规划设定而非事实：途中住一晚、两个儿童安全座椅、把车停在厦门机场等。假设错了，结论也会错，请自行修改。',
+  },
+  whereEachWins: { en: 'Where each option wins', zh: '各方案的优势所在' },
+  whereEachWinsLede: { en: 'Tap through to the badge table on the Compare tab, or adjust what matters most to you.', zh: '可进入“对比”页查看标签汇总，或调整你最看重的因素。' },
+  noOutrightWin: { en: 'no outright win', zh: '无单项第一' },
+
+  // ----------------------------------------------------------- compare tab ---
+  compareEyebrow: { en: 'Compare', zh: '对比' },
+  compareTitle: { en: 'Weights drive the answer', zh: '权重决定结论' },
+  compareLede: {
+    en: 'The winner is a weighted score, not an opinion. Move the sliders and the ranking, badges and recommendation all recalculate immediately.',
+    zh: '最优方案来自加权评分，而非主观判断。拖动滑块，排名、标签与推荐结果都会立即重算。',
+  },
+  howScoringWorks: { en: 'How the scoring works', zh: '评分方式说明' },
+  scoringBullet1: {
+    en: 'Cost and travel time are not hand-scored — they are computed from the calculator and scored relative to the best option: the cheapest gets 100, and the others scale by ratio.',
+    zh: '费用与在途时间并非人工打分，而是由计算器算出后相对最优方案评分：最省钱/最快的得 100 分，其余按比例折算。',
+  },
+  scoringBullet2: {
+    en: 'The other six categories are researched judgements, each with a written reason you can read on the option cards and in the table below.',
+    zh: '其余六项为调研判断，每项都附有说明，可在方案卡片与下表中查看。',
+  },
+  scoringBullet3: { en: 'Weights are relative: they are normalised to 100%, so nothing needs to add up to exactly 100 by hand.', zh: '权重是相对值，会归一化到 100%，无需手动凑成整数 100。' },
+  scoringBullet4: {
+    en: 'Scores are 0–100 and deliberately coarse. They are a conversation device, not precision engineering — a 3-point gap is noise, a 15-point gap is a real difference.',
+    zh: '评分范围为 0–100，刻意做得比较粗。它是讨论工具而非精密计算：相差 3 分属于噪声，相差 15 分才是真正的差别。',
+  },
+  sideBySide: { en: 'Side by side', zh: '并排对比' },
+  whyTheseScores: { en: 'Why these scores', zh: '评分依据' },
+  whyTheseScoresTitle: { en: 'The reasoning behind each number', zh: '每个数字背后的理由' },
+  whyTheseScoresLede: { en: 'Pick an option to read the full justification for every category.', zh: '选择一个方案，查看各项评分的完整说明。' },
+  weightLabel: { en: 'Weight {pct}%', zh: '权重 {pct}%' },
+  costLinesBehind: { en: 'Cost lines behind the score', zh: '评分背后的费用明细' },
+  costLinesBehindText: {
+    en: 'Every line reacts to the assumptions on the Costs tab. Cheap-looking options here are often the ones that quietly require an extra hotel night.',
+    zh: '每一行都会随“费用”页的假设变化。看起来便宜的方案，往往暗地里多了一晚住宿。',
+  },
+  costConvention: { en: 'Cost convention', zh: '费用口径' },
+  costConventionText: {
+    en: 'Costs are round trip — what the family actually pays. Travel times are the outbound journey only, because that is the leg that has to land before the launch. Both conventions are applied identically to every option.',
+    zh: '费用为往返总额（家庭实际支出）；在途时间仅为去程，因为这一段必须在发射前完成。两种口径对所有方案一致适用。',
+  },
+
+  // ------------------------------------------------------------- generated ---
+  recoCustom: { en: 'based on your weights', zh: '基于你设置的权重' },
+  recoTradeoff: { en: 'Weakest area: {label}', zh: '最弱环节：{label}' },
+  recoRunnerUp: { en: 'Runner-up: {name} — {tagline}', zh: '次优方案：{name} —— {tagline}' },
+  recoSeeRoute: { en: 'See the full route, timeline and costs →', zh: '查看完整路线、时间线与费用 →' },
+  recoNoRunnerUp: { en: 'No comparison data yet', zh: '暂无对比数据' },
+  rationaleCostCheapest: { en: '{cost} — the cheapest option in the comparison.', zh: '{cost} —— 本次比较中最省钱的方案。' },
+  rationaleCostMore: {
+    en: '{cost} — {pct}% more than {name} ({cheapest}).',
+    zh: '{cost} —— 比{name}（{cheapest}）贵 {pct}%。',
+  },
+  rationaleTimeFastest: { en: '{duration} door to door — the fastest option.', zh: '全程 {duration} —— 最省时的方案。' },
+  rationaleTimeLonger: {
+    en: '{duration} door to door, {delta} longer than the fastest option.',
+    zh: '全程 {duration}，比最省时的方案多 {delta}。',
+  },
+  catFamily: { en: 'Family & toddler comfort', zh: '家庭与幼儿舒适度' },
+  catFamilyShort: { en: 'Toddler comfort', zh: '带幼儿舒适度' },
+  catFamilyDesc: {
+    en: 'Nap windows, feeding and nappy stops, ability to move around, how survivable the day is with a 3-year-old and an 8-month-old.',
+    zh: '午睡时间、喂奶与换尿布的安排、能否活动身体，以及带着 3 岁和 8 个月大的孩子这一天有多难熬。',
+  },
+  catTime: { en: 'Door-to-door travel time', zh: '全程总耗时' },
+  catTimeShort: { en: 'Travel time', zh: '在途时间' },
+  catTimeDesc: {
+    en: 'Home to hotel, including waits, transfers and overnight stops. Scored relative to the fastest option.',
+    zh: '从家到酒店，含等待、换乘与途中过夜。相对最省时的方案评分。',
+  },
+  catReliability: { en: 'Reliability & delay risk', zh: '可靠性与延误风险' },
+  catReliabilityShort: { en: 'Reliability', zh: '可靠性' },
+  catReliabilityDesc: {
+    en: 'How likely the plan survives contact with reality: weather, queues, cancellations, and how much slack it has.',
+    zh: '计划在现实中能撑住的概率：天气、排队、取消风险，以及留有多少余量。',
+  },
+  catCost: { en: 'Cost', zh: '费用' },
+  catCostShort: { en: 'Cost', zh: '费用' },
+  catCostDesc: {
+    en: 'Total transport cost from the live calculator. Scored relative to the cheapest option; edit the assumptions to change it.',
+    zh: '实时计算器得出的交通总费用。相对最省钱的方案评分，可通过修改假设改变结果。',
+  },
+  catTransfers: { en: 'Few transfers & baggage handling', zh: '换乘与行李搬运' },
+  catTransfersShort: { en: 'Transfers', zh: '换乘' },
+  catTransfersDesc: { en: 'How many times you repack, queue and carry two children, a stroller and the luggage.', zh: '需要重复打包、排队，并搬运两个孩子、婴儿车和行李的次数。' },
+  catMobility: { en: 'Car freedom in Hainan', zh: '海南用车自由度' },
+  catMobilityShort: { en: 'Hainan mobility', zh: '用车自由度' },
+  catMobilityDesc: {
+    en: 'Whether you have a car from the moment you arrive, with car seats already fitted and no pick-up detour.',
+    zh: '是否一到海南就有车可用，安全座椅是否已装好，以及是否需要绕路取车。',
+  },
+  catLuggage: { en: 'Luggage & baby-gear capacity', zh: '行李与婴儿装备容量' },
+  catLuggageShort: { en: 'Baby gear', zh: '婴儿装备' },
+  catLuggageDesc: {
+    en: 'Room for a stroller, travel cot, diapers, formula and a cool bag — and the freedom to bring more home.',
+    zh: '能否装下婴儿车、旅行床、尿布、奶粉和保温袋，以及回程能否多带东西。',
+  },
+  catStress: { en: 'Low stress & driving fatigue', zh: '低压力与驾驶疲劳' },
+  catStressShort: { en: 'Low stress', zh: '低压力' },
+  catStressDesc: { en: 'Physical tiredness for the adults the day before an 08:30 launch, including night driving risk.', zh: '在 8:30 发射前一天大人的身体疲劳程度，含夜间驾驶风险。' },
+} as const satisfies Record<string, Bi>;
+
+export type UIKey = keyof typeof UI;
+
+export type FlexKey = 'fixed' | 'flexible' | 'buffer';
+export type SuitableKey = 'great' | 'ok' | 'wait';
+export type StrollerKey = 'yes' | 'partial' | 'no';

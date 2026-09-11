@@ -1,24 +1,22 @@
-import { ASSUMPTION_DEFS, ASSUMPTION_GROUPS } from '../data/assumptions';
-import type { AssumptionDef } from '../data/types';
+import { ASSUMPTION_DEFS, ASSUMPTION_GROUPS, isToggleDef } from '../data/assumptions';
 import { useTrip } from '../state';
+import { UI } from '../i18n/ui';
 import { ConfidenceChip } from './ui';
 
-function isToggle(def: AssumptionDef): boolean {
-  return def.unit === 'on/off';
-}
-
 export function AssumptionEditor() {
-  const { assumptions, setAssumption, resetAssumptions } = useTrip();
+  const { t, fmt, assumptions, setAssumption, resetAssumptions } = useTrip();
 
   return (
     <div className="assume">
       <div className="assume__toolbar">
         <span className="assume__count">
-          {ASSUMPTION_DEFS.filter((d) => assumptions[d.key] !== d.def).length} of {ASSUMPTION_DEFS.length} values
-          changed from our defaults
+          {fmt(t(UI.assumeChangedCount), {
+            n: ASSUMPTION_DEFS.filter((d) => assumptions[d.key] !== d.def).length,
+            total: ASSUMPTION_DEFS.length,
+          })}
         </span>
         <button type="button" className="btn btn--chip btn--chip-quiet" onClick={resetAssumptions}>
-          Reset all
+          {t(UI.resetAll)}
         </button>
       </div>
 
@@ -28,34 +26,35 @@ export function AssumptionEditor() {
         return (
           <section className="assume__group" key={group.id}>
             <header className="assume__group-head">
-              <h4>{group.label}</h4>
-              <p>{group.hint}</p>
+              <h4>{t(group.label)}</h4>
+              <p>{t(group.hint)}</p>
             </header>
             <div className="assume__rows">
               {defs.map((def) => {
                 const value = assumptions[def.key];
                 const changed = value !== def.def;
+                const unit = t(def.unit);
                 return (
                   <div className={`assume__row${changed ? ' assume__row--changed' : ''}`} key={def.key}>
                     <div className="assume__label">
-                      <span>{def.label}</span>
-                      <ConfidenceChip level={def.confidence} compact />
+                      <span>{t(def.label)}</span>
+                      <ConfidenceChip level={def.confidence} />
                     </div>
 
-                    {isToggle(def) ? (
+                    {isToggleDef(def) ? (
                       <div className="assume__toggle">
                         <button
                           type="button"
                           className={`switch${value ? ' switch--on' : ''}`}
                           role="switch"
                           aria-checked={value === 1}
-                          aria-label={def.label}
+                          aria-label={t(def.label)}
                           onClick={() => setAssumption(def.key, value ? 0 : 1)}
                         >
                           <span className="switch__knob" />
                         </button>
                         <span className="assume__toggle-text">
-                          {value ? def.onLabel ?? 'On' : def.offLabel ?? 'Off'}
+                          {value ? t(def.onLabel) : t(def.offLabel)}
                         </span>
                       </div>
                     ) : (
@@ -66,18 +65,18 @@ export function AssumptionEditor() {
                           min={def.min}
                           max={def.max}
                           step={def.step}
-                          aria-label={def.label}
+                          aria-label={t(def.label)}
                           onChange={(e) => {
                             const next = Number(e.target.value);
                             if (Number.isFinite(next)) setAssumption(def.key, next);
                           }}
                         />
-                        <span className="assume__unit">{def.unit}</span>
+                        <span className="assume__unit">{unit}</span>
                         {changed && (
                           <button
                             type="button"
                             className="assume__revert"
-                            title={`Back to default (${def.def} ${def.unit})`}
+                            title={fmt(t(UI.backToDefault), { value: `${def.def} ${unit}` })}
                             onClick={() => setAssumption(def.key, def.def)}
                           >
                             ↺
@@ -86,7 +85,7 @@ export function AssumptionEditor() {
                       </div>
                     )}
 
-                    {def.note && <p className="assume__note">{def.note}</p>}
+                    {def.note && <p className="assume__note">{t(def.note)}</p>}
                   </div>
                 );
               })}

@@ -3,81 +3,76 @@ import type {
   Category,
   CategoryId,
   CostLine,
+  Lang,
   TransportOption,
 } from '../data/types';
 import { computeValues, groupMinutes, resolveTimeline, sumTimes, type OptionTime } from './compute';
 import { formatCny, formatDuration } from './format';
+import { fill, t } from '../i18n/lang';
+import { UI } from '../i18n/ui';
 
 export const CATEGORIES: Category[] = [
   {
     id: 'family',
-    label: 'Family & toddler comfort',
-    short: 'Toddler comfort',
-    description:
-      'Nap windows, feeding and nappy stops, ability to move around, how survivable the day is with a 3-year-old and an 8-month-old.',
+    label: UI.catFamily,
+    short: UI.catFamilyShort,
+    description: UI.catFamilyDesc,
     defaultWeight: 22,
     derived: false,
   },
   {
     id: 'time',
-    label: 'Door-to-door travel time',
-    short: 'Travel time',
-    description:
-      'Home to hotel, including waits, transfers and overnight stops. Scored relative to the fastest option.',
+    label: UI.catTime,
+    short: UI.catTimeShort,
+    description: UI.catTimeDesc,
     defaultWeight: 16,
     derived: true,
   },
   {
     id: 'reliability',
-    label: 'Reliability & delay risk',
-    short: 'Reliability',
-    description:
-      'How likely the plan survives contact with reality: weather, queues, cancellations, and how much slack it has.',
+    label: UI.catReliability,
+    short: UI.catReliabilityShort,
+    description: UI.catReliabilityDesc,
     defaultWeight: 14,
     derived: false,
   },
   {
     id: 'cost',
-    label: 'Cost',
-    short: 'Cost',
-    description:
-      'Total transport cost from the live calculator. Scored relative to the cheapest option; edit the assumptions to change it.',
+    label: UI.catCost,
+    short: UI.catCostShort,
+    description: UI.catCostDesc,
     defaultWeight: 16,
     derived: true,
   },
   {
     id: 'transfers',
-    label: 'Few transfers & baggage handling',
-    short: 'Transfers',
-    description:
-      'How many times you repack, queue and carry two children, a stroller and the luggage.',
+    label: UI.catTransfers,
+    short: UI.catTransfersShort,
+    description: UI.catTransfersDesc,
     defaultWeight: 10,
     derived: false,
   },
   {
     id: 'mobility',
-    label: 'Car freedom in Hainan',
-    short: 'Hainan mobility',
-    description:
-      'Whether you have a car from the moment you arrive, with car seats already fitted and no pick-up detour.',
+    label: UI.catMobility,
+    short: UI.catMobilityShort,
+    description: UI.catMobilityDesc,
     defaultWeight: 10,
     derived: false,
   },
   {
     id: 'luggage',
-    label: 'Luggage & baby-gear capacity',
-    short: 'Baby gear',
-    description:
-      'Room for a stroller, travel cot, diapers, formula and a cool bag — and the freedom to bring more home.',
+    label: UI.catLuggage,
+    short: UI.catLuggageShort,
+    description: UI.catLuggageDesc,
     defaultWeight: 6,
     derived: false,
   },
   {
     id: 'stress',
-    label: 'Low stress & driving fatigue',
-    short: 'Low stress',
-    description:
-      'Physical tiredness for the adults the day before an 08:30 launch, including night driving risk.',
+    label: UI.catStress,
+    short: UI.catStressShort,
+    description: UI.catStressDesc,
     defaultWeight: 6,
     derived: false,
   },
@@ -95,6 +90,7 @@ export interface OptionEvaluation {
   costLines: CostLine[];
   time: OptionTime;
   scores: Record<CategoryId, number>;
+  /** Resolved, ready to render, in the active language. */
   rationale: Record<CategoryId, string>;
   /** Weight-normalised 0–100 total. */
   weighted: number;
@@ -110,6 +106,7 @@ export function evaluateOptions(
   options: TransportOption[],
   a: Assumptions,
   weights: Weights,
+  lang: Lang,
 ): OptionEvaluation[] {
   const computed = computeValues(a);
 
@@ -122,8 +119,7 @@ export function evaluateOptions(
 
   const cheapest = Math.min(...base.map((b) => b.cost));
   const fastest = Math.min(...base.map((b) => b.time.totalMinutes));
-  const cheapestName = base.find((b) => b.cost === cheapest)?.option.name ?? '';
-
+  const cheapestName = t(base.find((b) => b.cost === cheapest)?.option.name, lang);
   const weightSum = CATEGORIES.reduce((s, c) => s + (weights[c.id] ?? 0), 0) || 1;
 
   return base.map(({ option, costLines, cost, time }) => {
@@ -136,19 +132,27 @@ export function evaluateOptions(
         const delta = cost - cheapest;
         rationale.cost =
           delta <= 1
-            ? `${formatCny(cost)} — the cheapest option in the comparison.`
-            : `${formatCny(cost)} — ${Math.round((delta / cheapest) * 100)}% more than ${cheapestName} (${formatCny(cheapest)}).`;
+            ? fill(t(UI.rationaleCostCheapest, lang), { cost: formatCny(cost, lang) })
+            : fill(t(UI.rationaleCostMore, lang), {
+                cost: formatCny(cost, lang),
+                pct: Math.round((delta / cheapest) * 100),
+                name: cheapestName,
+                cheapest: formatCny(cheapest, lang),
+              });
       } else if (c.id === 'time') {
         scores.time = Math.round(relativeScore(fastest, time.totalMinutes));
         const delta = time.totalMinutes - fastest;
         rationale.time =
           delta <= 1
-            ? `${formatDuration(time.totalMinutes)} door to door — the fastest option.`
-            : `${formatDuration(time.totalMinutes)} door to door, ${formatDuration(delta)} longer than the fastest option.`;
+            ? fill(t(UI.rationaleTimeFastest, lang), { duration: formatDuration(time.totalMinutes, lang) })
+            : fill(t(UI.rationaleTimeLonger, lang), {
+                duration: formatDuration(time.totalMinutes, lang),
+                delta: formatDuration(delta, lang),
+              });
       } else {
         const s = option.staticScores[c.id];
         scores[c.id] = s.score;
-        rationale[c.id] = s.why;
+        rationale[c.id] = t(s.why, lang);
       }
     }
 
@@ -188,11 +192,3 @@ export function pickHighlights(items: OptionEvaluation[]): Highlights {
     ),
   };
 }
-
-export const HIGHLIGHT_LABEL: Record<keyof Highlights, string> = {
-  bestOverall: 'Best overall',
-  cheapest: 'Cheapest',
-  fastest: 'Fastest',
-  easiest: 'Easiest with toddlers',
-  mostFlexible: 'Most flexible',
-};

@@ -3,31 +3,21 @@ import { ACTIVITIES, BASES, FAMILY_LOGISTICS } from '../data/bases';
 import { DELAY_PLAN, ITINERARIES } from '../data/itinerary';
 import { Callout, Pill, SectionHeader } from '../components/ui';
 import { formatDate } from '../lib/format';
+import { useTrip } from '../state';
+import { UI } from '../i18n/ui';
 
-const FLEX_LABEL: Record<string, string> = {
-  fixed: 'Fixed date',
-  flexible: 'Flexible',
-  buffer: 'Buffer day',
-};
-
-const SUITABLE_LABEL: Record<string, string> = {
-  great: 'Great fit',
-  ok: 'Worth it',
-  wait: 'Skip this trip',
-};
+const FLEX_KEY = { fixed: 'flexFixed', flexible: 'flexFlexible', buffer: 'flexBuffer' } as const;
+const SUITABLE_KEY = { great: 'fitGreat', ok: 'fitOk', wait: 'fitWait' } as const;
 
 export function Plan() {
+  const { t, lang } = useTrip();
   const [variantId, setVariantId] = useState(ITINERARIES[0].id);
   const variant = ITINERARIES.find((v) => v.id === variantId) ?? ITINERARIES[0];
   const maxBand = Math.max(...BASES.map((b) => b.priceBand));
 
   return (
     <div className="stack">
-      <SectionHeader
-        eyebrow="Hainan plan"
-        title="Five to seven days, built around the launch"
-        lede="The itinerary is deliberately front-loaded: two days of buffer before the launch, and the holiday afterwards. If the launch slips, the second half absorbs it."
-      />
+      <SectionHeader eyebrow={t(UI.planEyebrow)} title={t(UI.planTitle)} lede={t(UI.planLede)} />
 
       <div className="chips">
         {ITINERARIES.map((v) => (
@@ -37,8 +27,8 @@ export function Plan() {
             className={`btn btn--chip${v.id === variant.id ? ' btn--chip-active' : ''}`}
             onClick={() => setVariantId(v.id)}
           >
-            {v.name}
-            {v.recommended && <span className="chips__flag">recommended</span>}
+            {t(v.name)}
+            {v.recommended && <span className="chips__flag">{t(UI.recommendedFlag)}</span>}
           </button>
         ))}
       </div>
@@ -46,39 +36,41 @@ export function Plan() {
       <section className="panel panel--pad">
         <div className="panel__head">
           <div>
-            <h3 className="panel__title">{variant.name}</h3>
-            <p className="panel__text panel__text--tight">{variant.subtitle}</p>
+            <h3 className="panel__title">{t(variant.name)}</h3>
+            <p className="panel__text panel__text--tight">{t(variant.subtitle)}</p>
           </div>
-          {variant.recommended && <Pill tone="good">Recommended itinerary</Pill>}
+          {variant.recommended && <Pill tone="good">{t(UI.recommendedItinerary)}</Pill>}
         </div>
-        <p className="plan__summary">{variant.summary}</p>
+        <p className="plan__summary">{t(variant.summary)}</p>
 
         <ol className="day-list">
           {variant.days.map((d) => (
             <li className={`day day--${d.flexibility}`} key={d.date}>
               <div className="day__date">
-                <span className="day__daylabel">{d.dayLabel}</span>
-                <span className="day__datevalue">{formatDate(d.date, { year: undefined, weekday: undefined })}</span>
-                <span className={`day__flex day__flex--${d.flexibility}`}>{FLEX_LABEL[d.flexibility]}</span>
+                <span className="day__daylabel">{t(d.dayLabel)}</span>
+                <span className="day__datevalue">
+                  {formatDate(d.date, lang, { year: undefined, weekday: undefined })}
+                </span>
+                <span className={`day__flex day__flex--${d.flexibility}`}>{t(UI[FLEX_KEY[d.flexibility]])}</span>
               </div>
               <div className="day__body">
-                <h4 className="day__title">{d.title}</h4>
+                <h4 className="day__title">{t(d.title)}</h4>
                 <div className="day__meta">
                   <span className="day__meta-item">
-                    <strong>Base</strong> {d.base}
+                    <strong>{t(UI.base)}</strong> {t(d.base)}
                   </span>
                   <span className="day__meta-item">
-                    <strong>Driving</strong> {d.drive}
+                    <strong>{t(UI.driving)}</strong> {t(d.drive)}
                   </span>
                 </div>
                 <ul className="day__plan">
-                  {d.plan.map((p) => (
-                    <li key={p}>{p}</li>
+                  {d.plan.map((p, i) => (
+                    <li key={i}>{t(p)}</li>
                   ))}
                 </ul>
                 <p className="day__toddler">
-                  <span className="day__toddler-tag">With the children</span>
-                  {d.toddler}
+                  <span className="day__toddler-tag">{t(UI.withChildren)}</span>
+                  {t(d.toddler)}
                 </p>
               </div>
             </li>
@@ -87,47 +79,39 @@ export function Plan() {
       </section>
 
       <section className="panel panel--pad">
-        <h3 className="panel__title">If the launch moves</h3>
+        <h3 className="panel__title">{t(UI.ifLaunchMoves)}</h3>
         <div className="delay-grid">
-          {DELAY_PLAN.map((d) => (
-            <div className="delay" key={d.when}>
-              <div className="delay__when">{d.when}</div>
-              <div className="delay__do">{d.do}</div>
+          {DELAY_PLAN.map((d, i) => (
+            <div className="delay" key={i}>
+              <div className="delay__when">{t(d.when)}</div>
+              <div className="delay__do">{t(d.do)}</div>
             </div>
           ))}
         </div>
       </section>
 
       <section>
-        <SectionHeader
-          eyebrow="Where to stay"
-          title="Bases compared for this trip"
-          lede="Judged only on how well each place serves a launch plus a toddler beach holiday — not as a general Hainan guide."
-        />
+        <SectionHeader eyebrow={t(UI.whereToStay)} title={t(UI.basesTitle)} lede={t(UI.basesLede)} />
         <div className="ctable-wrap">
           <table className="ctable ctable--bases">
-            <caption className="ctable__caption">
-              Drive times, fit scores and price bands are our estimates and judgements, not verified quotes — hotel
-              booking sites could not be read from this build environment. The launch-night occupancy figure (90–95%)
-              and the official viewing-point list are verified.
-            </caption>
+            <caption className="ctable__caption">{t(UI.basesCaption)}</caption>
             <thead>
               <tr>
-                <th>Base</th>
-                <th>Drive to Longlou</th>
-                <th>Toddler fit</th>
-                <th>Infant fit</th>
-                <th>Family room / night</th>
+                <th>{t(UI.colBase)}</th>
+                <th>{t(UI.colDriveToLonglou)}</th>
+                <th>{t(UI.colToddlerFit)}</th>
+                <th>{t(UI.colInfantFit)}</th>
+                <th>{t(UI.colHotel)}</th>
               </tr>
             </thead>
             <tbody>
               {BASES.map((b) => (
                 <tr key={b.id}>
                   <th scope="row">
-                    <span className="base__name">{b.name}</span>
+                    <span className="base__name">{t(b.name)}</span>
                     <span className="base__cn">{b.cn}</span>
                   </th>
-                  <td>{b.driveToLonglou}</td>
+                  <td>{t(b.driveToLonglou)}</td>
                   <td>
                     <div className="meter">
                       <div className="meter__fill meter__fill--coral" style={{ width: `${b.toddlerFit}%` }} />
@@ -142,7 +126,7 @@ export function Plan() {
                   </td>
                   <td>
                     <div className="price-band">
-                      <span>{b.hotelPerNight}</span>
+                      <span>{t(b.hotelPerNight)}</span>
                       <div className="price-band__bar" style={{ width: `${(b.priceBand / maxBand) * 100}%` }} />
                     </div>
                   </td>
@@ -155,58 +139,53 @@ export function Plan() {
           {BASES.slice(0, 6).map((b) => (
             <div className="panel panel--pad" key={b.id}>
               <h3 className="panel__title">
-                {b.name} <span className="panel__cn">{b.cn}</span>
+                {t(b.name)} <span className="panel__cn">{b.cn}</span>
               </h3>
-              <p className="panel__text">{b.verdict}</p>
-              <p className="panel__text panel__text--good">{b.good}</p>
-              <p className="panel__text panel__text--warn">{b.caveat}</p>
+              <p className="panel__text">{t(b.verdict)}</p>
+              <p className="panel__text panel__text--good">{t(b.good)}</p>
+              <p className="panel__text panel__text--warn">{t(b.caveat)}</p>
             </div>
           ))}
         </div>
       </section>
 
       <section>
-        <SectionHeader
-          eyebrow="Things to actually do"
-          title="Activities that work with a 3-year-old and an 8-month-old"
-          lede="With a short honest note on the ones that do not, so we do not waste a day learning it the hard way."
-        />
+        <SectionHeader eyebrow={t(UI.activitiesEyebrow)} title={t(UI.activitiesTitle)} lede={t(UI.activitiesLede)} />
         <div className="activities">
           {ACTIVITIES.map((a) => (
             <article className={`activity activity--${a.suitable}`} key={a.id}>
               <header className="activity__head">
                 <div>
-                  <h3 className="activity__name">{a.name}</h3>
+                  <h3 className="activity__name">{t(a.name)}</h3>
                   <div className="activity__cn">
-                    {a.cn} · {a.where}
+                    {a.cn} · {t(a.where)}
                   </div>
                 </div>
-                <span className={`pill pill--${a.suitable}`}>{SUITABLE_LABEL[a.suitable]}</span>
+                <span className={`pill pill--${a.suitable}`}>{t(UI[SUITABLE_KEY[a.suitable]])}</span>
               </header>
               <div className="activity__meta">
-                <span>{a.ageFit}</span>
-                <span>{a.duration}</span>
-                <span>{a.cost}</span>
+                <span>{t(a.ageFit)}</span>
+                <span>{t(a.duration)}</span>
+                <span>{t(a.cost)}</span>
               </div>
-              <p className="activity__verdict">{a.verdict}</p>
+              <p className="activity__verdict">{t(a.verdict)}</p>
             </article>
           ))}
         </div>
       </section>
 
       <section className="panel panel--pad">
-        <h3 className="panel__title">Family logistics worth knowing before you go</h3>
+        <h3 className="panel__title">{t(UI.logistics)}</h3>
         <ul className="bullets bullets--wide">
-          {FAMILY_LOGISTICS.map((f) => (
-            <li key={f.title}>
-              <strong>{f.title}</strong>
-              <span className="bullet-detail">{f.detail}</span>
+          {FAMILY_LOGISTICS.map((f, i) => (
+            <li key={i}>
+              <strong>{t(f.title)}</strong>
+              <span className="bullet-detail">{t(f.detail)}</span>
             </li>
           ))}
         </ul>
-        <Callout tone="info" title="Verify locally">
-          Child-restraint rules, hospital details and supply availability are the kind of thing that varies by
-          district and changes over time. Treat these as planning notes, not legal or medical advice.
+        <Callout tone="info" title={t(UI.verifyLocally)}>
+          {t(UI.verifyLocallyText)}
         </Callout>
       </section>
     </div>

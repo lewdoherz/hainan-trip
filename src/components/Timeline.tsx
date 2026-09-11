@@ -1,6 +1,7 @@
 import type { Assumptions, Segment, TimelineGroup } from '../data/types';
 import { computeValues, segmentMinutes } from '../lib/compute';
 import { formatDuration } from '../lib/format';
+import { useTrip } from '../state';
 
 const KIND_ICON: Record<Segment['kind'], string> = {
   travel: '→',
@@ -18,19 +19,12 @@ function clock(start: string, offsetMinutes: number): string {
   return `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
 }
 
-export function Timeline({
-  groups,
-  assumptions,
-  compact = false,
-}: {
-  groups: TimelineGroup[];
-  assumptions: Assumptions;
-  compact?: boolean;
-}) {
+export function Timeline({ groups, assumptions }: { groups: TimelineGroup[]; assumptions: Assumptions }) {
+  const { t, lang } = useTrip();
   const computed = computeValues(assumptions);
 
   return (
-    <div className={`timeline${compact ? ' timeline--compact' : ''}`}>
+    <div className="timeline">
       {groups.map((group) => {
         let offset = 0;
         const rows = group.segments.map((s) => {
@@ -45,10 +39,10 @@ export function Timeline({
           <section className="tl-group" key={group.id}>
             <div className="tl-group__head">
               <div>
-                <h4 className="tl-group__title">{group.label}</h4>
-                {group.sublabel && <div className="tl-group__sub">{group.sublabel}</div>}
+                <h4 className="tl-group__title">{t(group.label)}</h4>
+                {group.sublabel && <div className="tl-group__sub">{t(group.sublabel)}</div>}
               </div>
-              <div className="tl-group__total">{formatDuration(groupTotal)}</div>
+              <div className="tl-group__total">{formatDuration(groupTotal, lang)}</div>
             </div>
             <ol className="tl-list">
               {rows.map(({ s, minutes, at }) => (
@@ -58,19 +52,19 @@ export function Timeline({
                   </span>
                   <div className="tl-item__body">
                     <div className="tl-item__top">
-                      <span className="tl-item__label">{s.label}</span>
+                      <span className="tl-item__label">{t(s.label)}</span>
                       <span className="tl-item__time">
                         {at && <span className="tl-item__clock">{at}</span>}
-                        {formatDuration(minutes)}
+                        {formatDuration(minutes, lang)}
                       </span>
                     </div>
-                    {s.detail && <div className="tl-item__detail">{s.detail}</div>}
-                    {s.note && <div className="tl-item__note">{s.note}</div>}
+                    {s.detail && <div className="tl-item__detail">{t(s.detail)}</div>}
+                    {s.note && <div className="tl-item__note">{t(s.note)}</div>}
                   </div>
                 </li>
               ))}
             </ol>
-            {group.note && <p className="tl-group__note">{group.note}</p>}
+            {group.note && <p className="tl-group__note">{t(group.note)}</p>}
           </section>
         );
       })}

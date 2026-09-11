@@ -1,6 +1,6 @@
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext, useEffect, useMemo } from 'react';
 import type { ReactNode } from 'react';
-import type { Assumptions, CategoryId } from './data/types';
+import type { Assumptions, Bi, CategoryId, Lang } from './data/types';
 import { DEFAULT_ASSUMPTIONS } from './data/assumptions';
 import { TRANSPORT_OPTIONS } from './data/transport-options';
 import {
@@ -12,8 +12,17 @@ import {
   type Weights,
 } from './lib/scoring';
 import { usePersistentState } from './lib/storage';
+import { fill, t as translate, tAll as translateAll, HTML_LANG } from './i18n/lang';
+import { UI } from './i18n/ui';
 
 interface TripState {
+  lang: Lang;
+  setLang: (lang: Lang) => void;
+  /** Resolve a bilingual value to the active language. */
+  t: (value: Bi | string | undefined) => string;
+  tAll: (values: Bi[] | undefined) => string[];
+  /** Substitute {placeholders} in an already-resolved template. */
+  fmt: (template: string, vars: Record<string, string | number>) => string;
   assumptions: Assumptions;
   setAssumption: (key: string, value: number) => void;
   resetAssumptions: () => void;
@@ -28,15 +37,26 @@ interface TripState {
 const Ctx = createContext<TripState | null>(null);
 
 export function TripProvider({ children }: { children: ReactNode }) {
+  const [lang, setLang] = usePersistentState<Lang>('lang', 'en');
   const [assumptions, setAssumptions, resetAssumptions] = usePersistentState<Assumptions>(
     'assumptions',
     DEFAULT_ASSUMPTIONS,
   );
   const [weights, setWeights, resetWeights] = usePersistentState<Weights>('weights', DEFAULT_WEIGHTS);
 
+  useEffect(() => {
+    document.documentElement.lang = HTML_LANG[lang];
+    document.title = `${translate(TRIP_TITLE, lang)} · ${translate(UI.overviewEyebrow, lang)}`;
+  }, [lang]);
+
   const value = useMemo<TripState>(() => {
-    const evaluations = evaluateOptions(TRANSPORT_OPTIONS, assumptions, weights);
+    const evaluations = evaluateOptions(TRANSPORT_OPTIONS, assumptions, weights, lang);
     return {
+      lang,
+      setLang,
+      t: (v) => translate(v, lang),
+      tAll: (v) => translateAll(v, lang),
+      fmt: fill,
       assumptions,
       setAssumption: (key, v) => setAssumptions({ ...assumptions, [key]: v }),
       resetAssumptions,
@@ -47,10 +67,12 @@ export function TripProvider({ children }: { children: ReactNode }) {
       byId: Object.fromEntries(evaluations.map((e) => [e.option.id, e])),
       highlights: pickHighlights(evaluations),
     };
-  }, [assumptions, weights, setAssumptions, setWeights, resetAssumptions, resetWeights]);
+  }, [assumptions, weights, lang, setAssumptions, setWeights, resetAssumptions, resetWeights]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
+
+const TRIP_TITLE: Bi = { en: 'Xiamen → Wenchang', zh: '厦门 → 文昌' };
 
 export function useTrip(): TripState {
   const ctx = useContext(Ctx);

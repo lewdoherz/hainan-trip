@@ -180,6 +180,45 @@ code {
   border-radius: 999px;
   max-width: 100%;
 }
+
+.app__header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.lang {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--teal-900);
+  flex: none;
+}
+
+.lang__btn {
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 660;
+  letter-spacing: 0.02em;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  padding: 5px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.lang__btn:hover {
+  color: #fff;
+}
+
+.lang__btn--active {
+  background: #fff;
+  color: var(--teal-900);
+}
 .nav::-webkit-scrollbar {
   display: none;
 }

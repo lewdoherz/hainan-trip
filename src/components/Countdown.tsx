@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TRIP } from '../data/trip';
+import { useTrip } from '../state';
+import { UI } from '../i18n/ui';
 
 function diffParts(target: number) {
   const ms = Math.max(0, target - Date.now());
@@ -14,6 +16,7 @@ function diffParts(target: number) {
 }
 
 export function Countdown({ showSeconds = true }: { showSeconds?: boolean }) {
+  const { t } = useTrip();
   const target = new Date(TRIP.launch.startsAt).getTime();
   const [parts, setParts] = useState(() => diffParts(target));
 
@@ -25,17 +28,17 @@ export function Countdown({ showSeconds = true }: { showSeconds?: boolean }) {
   if (parts.passed) {
     return (
       <div className="countdown countdown--passed">
-        <span className="countdown__passed-text">Launch window reached — check the live schedule</span>
+        <span className="countdown__passed-text">{t(UI.cdPassed)}</span>
       </div>
     );
   }
 
   const units: { label: string; value: number }[] = [
-    { label: 'days', value: parts.days },
-    { label: 'hours', value: parts.hours },
-    { label: 'minutes', value: parts.minutes },
+    { label: t(UI.cdDays), value: parts.days },
+    { label: t(UI.cdHours), value: parts.hours },
+    { label: t(UI.cdMinutes), value: parts.minutes },
   ];
-  if (showSeconds) units.push({ label: 'seconds', value: parts.seconds });
+  if (showSeconds) units.push({ label: t(UI.cdSeconds), value: parts.seconds });
 
   return (
     <div className="countdown" role="timer" aria-live="off">

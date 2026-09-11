@@ -1,45 +1,40 @@
-export function formatCny(value: number, opts: { compact?: boolean } = {}): string {
+import type { Lang } from '../data/types';
+import { LOCALE } from '../i18n/lang';
+
+export function formatCny(value: number, lang: Lang): string {
   const rounded = Math.round(value);
-  if (opts.compact && Math.abs(rounded) >= 10000) {
-    return `¥${(rounded / 10000).toFixed(1)}万`;
-  }
-  return `¥${rounded.toLocaleString('en-US')}`;
+  return lang === 'zh' ? `¥${rounded.toLocaleString('zh-CN')}` : `¥${rounded.toLocaleString('en-US')}`;
 }
 
-/** "7 h 45 m" or "2 d 6 h". Uses one significant unit below the top one. */
-export function formatDuration(minutes: number): string {
+/** "7 h 45 m" / "7 小时 45 分", or "2 d 6 h" / "2 天 6 小时". */
+export function formatDuration(minutes: number, lang: Lang): string {
   const m = Math.max(0, Math.round(minutes));
-  if (m < 60) return `${m} min`;
+  const zh = lang === 'zh';
+  if (m < 60) return zh ? `${m} 分钟` : `${m} min`;
   const hours = Math.floor(m / 60);
   const mins = m % 60;
-  if (hours < 24) return mins === 0 ? `${hours} h` : `${hours} h ${mins} m`;
+  if (hours < 24) {
+    if (mins === 0) return zh ? `${hours} 小时` : `${hours} h`;
+    return zh ? `${hours} 小时 ${mins} 分` : `${hours} h ${mins} m`;
+  }
   const days = Math.floor(hours / 24);
   const remHours = hours % 24;
-  return remHours === 0 ? `${days} d` : `${days} d ${remHours} h`;
+  if (remHours === 0) return zh ? `${days} 天` : `${days} d`;
+  return zh ? `${days} 天 ${remHours} 小时` : `${days} d ${remHours} h`;
 }
 
-export function formatDate(iso: string, opts: Intl.DateTimeFormatOptions = {}): string {
-  return new Date(iso).toLocaleDateString('en-GB', {
+export function formatDate(iso: string, lang: Lang, opts: Intl.DateTimeFormatOptions = {}): string {
+  const text = new Date(iso).toLocaleDateString(LOCALE[lang], {
     weekday: 'short',
     day: 'numeric',
     month: 'short',
     year: 'numeric',
     ...opts,
   });
+  // zh-CN renders "2026年9月17日周四" — give the weekday a space.
+  return lang === 'zh' ? text.replace(/(周[一二三四五六日天])/, ' $1') : text;
 }
 
-export function formatDateShort(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+export function formatDateShort(iso: string, lang: Lang): string {
+  return new Date(iso).toLocaleDateString(LOCALE[lang], { day: 'numeric', month: 'short' });
 }
-
-export const CONFIDENCE_LABEL: Record<string, string> = {
-  verified: 'Verified',
-  estimate: 'Estimate',
-  assumption: 'Assumption',
-};
-
-export const CONFIDENCE_HINT: Record<string, string> = {
-  verified: 'Checked against a named source — see Sources.',
-  estimate: 'Best researched range; indicative only — confirm before booking.',
-  assumption: 'A planning choice, not a researched fact. Edit it to match reality.',
-};

@@ -2,7 +2,18 @@
  * Central data model. Every researched figure in this app carries its own
  * provenance so the UI can distinguish verified facts from estimates and
  * assumptions, and so values can be re-verified later without touching UI code.
+ *
+ * Every user-facing string is bilingual. The `Bi` type makes that structural:
+ * a missing translation is a compile error, not a silent fallback.
  */
+
+export type Lang = 'en' | 'zh';
+
+/** A string that exists in both languages. */
+export interface Bi {
+  en: string;
+  zh: string;
+}
 
 /** How much we trust a figure. */
 export type Confidence = 'verified' | 'estimate' | 'assumption';
@@ -11,13 +22,13 @@ export type SourceKind = 'official' | 'operator' | 'platform' | 'secondary';
 
 export interface Source {
   id: string;
-  label: string;
+  label: Bi;
   url: string;
   publisher: string;
   kind: SourceKind;
   /** ISO date the figure behind this source was last observed/verified. */
   verifiedAt?: string;
-  note?: string;
+  note?: Bi;
 }
 
 /** A single researched number. `value` is the point estimate used in math. */
@@ -28,7 +39,7 @@ export interface Metric {
   high?: number;
   confidence: Confidence;
   sourceIds: string[];
-  notes?: string;
+  notes?: Bi;
 }
 
 // ---------------------------------------------------------------------------
@@ -51,17 +62,12 @@ export type StaticCategoryId = Exclude<CategoryId, DerivedCategoryId>;
 
 export interface Category {
   id: CategoryId;
-  label: string;
-  short: string;
+  label: Bi;
+  short: Bi;
   /** What a high score means, in family terms. */
-  description: string;
+  description: Bi;
   defaultWeight: number;
   derived: boolean;
-  /**
-   * For `time` and `cost`: how the derived penalty is computed.
-   * ratio → score = 100 × (best / value), so "cheapest/fastest" = 100.
-   */
-  badge?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -70,13 +76,13 @@ export interface Category {
 
 export interface CostLine {
   id: string;
-  label: string;
+  label: Bi;
   amount: number;
   /** Assumption keys this line is computed from, for "what drives this" hints. */
   drivenBy?: string[];
   confidence: Confidence;
   sourceIds?: string[];
-  note?: string;
+  note?: Bi;
 }
 
 // ---------------------------------------------------------------------------
@@ -87,8 +93,8 @@ export type SegmentKind = 'travel' | 'wait' | 'admin' | 'rest' | 'overnight';
 
 export interface Segment {
   id: string;
-  label: string;
-  detail?: string;
+  label: Bi;
+  detail?: Bi;
   kind: SegmentKind;
   /**
    * Literal minutes, an assumption key (user-editable), or a compute key
@@ -97,19 +103,19 @@ export interface Segment {
   minutes: number | { assumption: string } | { compute: string };
   confidence: Confidence;
   /** Comfort note shown in the timeline, e.g. nap window. */
-  note?: string;
+  note?: Bi;
 }
 
 /** A day/phase grouping of segments for the route timeline. */
 export interface TimelineGroup {
   id: string;
-  label: string;
+  label: Bi;
   /** e.g. "Day 1 — Sep 15" */
-  sublabel?: string;
+  sublabel?: Bi;
   /** Local clock time the group starts at, e.g. "05:30" — drives the running clock. */
   start?: string;
   segments: Segment[];
-  note?: string;
+  note?: Bi;
 }
 
 // ---------------------------------------------------------------------------
@@ -118,27 +124,27 @@ export interface TimelineGroup {
 
 export interface ScoreRationale {
   score: number; // 0–100
-  why: string;
+  why: Bi;
 }
 
 export interface PracticalNote {
-  label: string;
-  value: string;
+  label: Bi;
+  value: Bi;
   tone?: 'good' | 'warn' | 'bad' | 'neutral';
 }
 
 export interface TransportOption {
   id: string;
-  name: string;
-  subtitle: string;
+  name: Bi;
+  subtitle: Bi;
   cnName?: string;
   /** Short mode tag used on cards. */
-  modeLabel: string;
-  vehicle: string;
+  modeLabel: Bi;
+  vehicle: Bi;
   /** One-line positioning of the option. */
-  tagline: string;
+  tagline: Bi;
   /** Longer narrative for the detail view. */
-  verdict: string;
+  verdict: Bi;
   accent: string;
   /** Hand-over points where luggage and children must be moved again. */
   transfers: number;
@@ -147,12 +153,12 @@ export interface TransportOption {
   /** Static timeline, or one built from the assumptions (the drive option). */
   timeline: TimelineGroup[] | ((a: Assumptions) => TimelineGroup[]);
   practical: PracticalNote[];
-  pros: string[];
-  cons: string[];
+  pros: Bi[];
+  cons: Bi[];
   /** Route legs for the map / route view. */
   legs: RouteLeg[];
   /** What to do if the plan breaks (launch slip, ferry weather, missed flight). */
-  contingencies: string[];
+  contingencies: Bi[];
   confidence: Confidence;
 }
 
@@ -160,22 +166,22 @@ export interface RouteLeg {
   id: string;
   fromId: string;
   toId: string;
-  label: string;
+  label: Bi;
   mode: 'car' | 'ferry' | 'plane' | 'train' | 'hsr' | 'bus' | 'taxi' | 'walk';
   /** Distance/time display strings (approximate, human readable). */
-  distance: string;
-  duration: string;
-  note?: string;
+  distance: Bi;
+  duration: Bi;
+  note?: Bi;
 }
 
 export interface Place {
   id: string;
-  name: string;
+  name: Bi;
   cn: string;
   lat: number;
   lng: number;
   kind: 'origin' | 'hub' | 'port' | 'airport' | 'launch' | 'stay' | 'stop' | 'destination';
-  note?: string;
+  note?: Bi;
 }
 
 // ---------------------------------------------------------------------------
@@ -186,9 +192,9 @@ export type AssumptionGroup = 'drive' | 'ferry' | 'flight' | 'rental' | 'train' 
 
 export interface AssumptionDef {
   key: string;
-  label: string;
+  label: Bi;
   group: AssumptionGroup;
-  unit: string;
+  unit: Bi;
   /** Default value — every value here is an ESTIMATE unless labelled otherwise. */
   def: number;
   min: number;
@@ -196,10 +202,10 @@ export interface AssumptionDef {
   step: number;
   confidence: Confidence;
   sourceIds?: string[];
-  note?: string;
+  note?: Bi;
   /** For unit 'on/off' toggles: what "on" means. */
-  onLabel?: string;
-  offLabel?: string;
+  onLabel?: Bi;
+  offLabel?: Bi;
 }
 
 export type Assumptions = Record<string, number>;
@@ -210,25 +216,32 @@ export type Assumptions = Record<string, number>;
 
 export interface ViewingSpot {
   id: string;
-  name: string;
+  name: Bi;
   cn: string;
   /** Direction/feel of the view, roughly how far from the pad. */
-  distance: string;
+  distance: Bi;
   /** Is it freely accessible, or ticketed/restricted? */
-  access: string;
-  ticket: string;
+  access: Bi;
+  ticket: Bi;
   stroller: 'yes' | 'partial' | 'no';
-  goodFor: string;
-  caveat?: string;
+  goodFor: Bi;
+  caveat?: Bi;
   confidence: Confidence;
   sourceIds: string[];
 }
 
 export interface LaunchTimingStep {
-  time: string;
-  label: string;
-  detail: string;
+  time: Bi;
+  label: Bi;
+  detail: Bi;
   tone?: 'info' | 'warn' | 'good';
+}
+
+export interface LaunchFact {
+  label: Bi;
+  value: Bi;
+  confidence: Confidence;
+  note?: Bi;
 }
 
 // ---------------------------------------------------------------------------
@@ -237,20 +250,20 @@ export interface LaunchTimingStep {
 
 export interface ItineraryDay {
   date: string; // ISO
-  dayLabel: string;
-  title: string;
-  base: string;
-  drive: string;
-  plan: string[];
-  toddler: string;
+  dayLabel: Bi;
+  title: Bi;
+  base: Bi;
+  drive: Bi;
+  plan: Bi[];
+  toddler: Bi;
   flexibility: 'fixed' | 'flexible' | 'buffer';
 }
 
 export interface ItineraryVariant {
   id: string;
-  name: string;
-  subtitle: string;
+  name: Bi;
+  subtitle: Bi;
   recommended?: boolean;
-  summary: string;
+  summary: Bi;
   days: ItineraryDay[];
 }

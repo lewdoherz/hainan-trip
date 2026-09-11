@@ -1,75 +1,66 @@
-import type { CategoryId } from '../data/types';
+import type { CategoryId, Lang } from '../data/types';
 import type { Highlights, OptionEvaluation, Weights } from '../lib/scoring';
-import { CATEGORIES, HIGHLIGHT_LABEL } from '../lib/scoring';
+import { CATEGORIES } from '../lib/scoring';
 import { formatCny, formatDuration } from '../lib/format';
+import { useTrip } from '../state';
+import { UI } from '../i18n/ui';
 
 type Row =
-  | { kind: 'group'; label: string; note?: string }
+  | { kind: 'group'; id: string; labelKey: keyof typeof UI; noteKey?: keyof typeof UI }
   | {
-      kind: 'fact' | 'score';
+      kind: 'fact';
       id: string;
-      label: string;
+      labelKey: keyof typeof UI;
+      hintKey?: keyof typeof UI;
       better: 'lower' | 'higher';
-      hint?: string;
       value: (ev: OptionEvaluation) => number;
-      display: (ev: OptionEvaluation) => string;
-      category?: CategoryId;
-    };
+      display: (ev: OptionEvaluation, lang: Lang) => string;
+    }
+  | { kind: 'score'; id: CategoryId; better: 'higher' };
+
+const HIGHLIGHT_KEYS: (keyof Highlights)[] = ['bestOverall', 'cheapest', 'fastest', 'easiest', 'mostFlexible'];
 
 const ROWS: Row[] = [
-  { kind: 'group', label: 'The hard numbers', note: 'Cost and time come from the live calculator — edit assumptions on the Costs tab.' },
+  { kind: 'group', id: 'hard', labelKey: 'groupHardNumbers', noteKey: 'groupHardNumbersNote' },
   {
     kind: 'fact',
     id: 'cost',
-    label: 'Total transport cost',
+    labelKey: 'rowCost',
+    hintKey: 'rowCostHint',
     better: 'lower',
     value: (e) => e.cost,
-    display: (e) => formatCny(e.cost),
-    hint: 'Transport, road hotels and ferry/rental extras. Excludes Hainan resort nights.',
+    display: (e, lang) => formatCny(e.cost, lang),
   },
   {
     kind: 'fact',
     id: 'total',
-    label: 'Door-to-door time',
+    labelKey: 'rowTotal',
+    hintKey: 'rowTotalHint',
     better: 'lower',
     value: (e) => e.time.totalMinutes,
-    display: (e) => formatDuration(e.time.totalMinutes),
-    hint: 'Home to hotel, including waits, transfers and overnight sleep.',
+    display: (e, lang) => formatDuration(e.time.totalMinutes, lang),
   },
   {
     kind: 'fact',
     id: 'awake',
-    label: 'Awake travel time',
+    labelKey: 'rowAwake',
+    hintKey: 'rowAwakeHint',
     better: 'lower',
     value: (e) => e.time.activeMinutes,
-    display: (e) => formatDuration(e.time.activeMinutes),
-    hint: 'Everything except sleeping in a bed — the part that actually wears the family down.',
+    display: (e, lang) => formatDuration(e.time.activeMinutes, lang),
   },
   {
     kind: 'fact',
     id: 'transfers',
-    label: 'Transfers / hand-overs',
+    labelKey: 'rowTransfers',
+    hintKey: 'rowTransfersHint',
     better: 'lower',
     value: (e) => e.option.transfers,
     display: (e) => String(e.option.transfers),
-    hint: 'Each one means repacking, queueing and carrying children plus luggage again.',
   },
-  { kind: 'group', label: 'Family scores (0–100, weighted by your sliders)' },
-  ...CATEGORIES.map(
-    (c): Row => ({
-      kind: 'score',
-      id: c.id,
-      label: c.label,
-      better: 'higher',
-      hint: c.description,
-      value: (e) => e.scores[c.id],
-      display: (e) => `${Math.round(e.scores[c.id])}`,
-      category: c.id,
-    }),
-  ),
+  { kind: 'group', id: 'scores', labelKey: 'groupScores' },
+  ...CATEGORIES.map((c): Row => ({ kind: 'score', id: c.id, better: 'higher' })),
 ];
-
-const HIGHLIGHT_ORDER = Object.keys(HIGHLIGHT_LABEL) as (keyof Highlights)[];
 
 export function ComparisonTable({
   evaluations,
@@ -80,64 +71,78 @@ export function ComparisonTable({
   highlights: Highlights;
   weights: Weights;
 }) {
+  const { t, fmt, lang } = useTrip();
   const weightSum = CATEGORIES.reduce((s, c) => s + (weights[c.id] ?? 0), 0) || 1;
 
-  const bestFor = (row: Extract<Row, { kind: 'fact' | 'score' }>) => {
-    const values = evaluations.map((e) => row.value(e));
-    return row.better === 'lower' ? Math.min(...values) : Math.max(...values);
-  };
+  const columnCount = evaluations.length + 1;
 
   return (
     <div className="ctable-wrap">
       <table className="ctable">
         <thead>
           <tr>
-            <th className="ctable__corner">Criterion</th>
+            <th className="ctable__corner">{t(UI.criterion)}</th>
             {evaluations.map((e) => (
               <th key={e.option.id} style={{ ['--accent' as string]: e.option.accent }}>
-                <span className="ctable__opt">{e.option.name}</span>
-                <span className="ctable__opt-sub">{e.option.vehicle}</span>
-                {highlights.bestOverall === e.option.id && <span className="badge badge--bestOverall">Best overall</span>}
+                <span className="ctable__opt">{t(e.option.name)}</span>
+                <span className="ctable__opt-sub">{t(e.option.vehicle)}</span>
+                {highlights.bestOverall === e.option.id && (
+                  <span className="badge badge--bestOverall">{t(UI.bestOverall)}</span>
+                )}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {ROWS.map((row, i) => {
+          {ROWS.map((row) => {
             if (row.kind === 'group') {
               return (
-                <tr className="ctable__group" key={`g-${i}`}>
-                  <td colSpan={evaluations.length + 1}>
-                    <span>{row.label}</span>
-                    {row.note && <em>{row.note}</em>}
+                <tr className="ctable__group" key={`group-${row.id}`}>
+                  <td colSpan={columnCount}>
+                    <span>{t(UI[row.labelKey])}</span>
+                    {row.noteKey && <em>{t(UI[row.noteKey])}</em>}
                   </td>
                 </tr>
               );
             }
-            const best = bestFor(row);
+
+            const category = row.kind === 'score' ? CATEGORIES.find((c) => c.id === row.id) : undefined;
+            const label = category ? t(category.label) : row.kind === 'fact' ? t(UI[row.labelKey]) : '';
+            const hint = category
+              ? t(category.description)
+              : row.kind === 'fact' && row.hintKey
+                ? t(UI[row.hintKey])
+                : undefined;
+            const cellValue = (e: OptionEvaluation) => (row.kind === 'score' ? e.scores[row.id] : row.value(e));
+            const values = evaluations.map(cellValue);
+            const best = row.better === 'lower' ? Math.min(...values) : Math.max(...values);
+
             return (
               <tr key={`${row.kind}-${row.id}`}>
-                <th scope="row" title={row.hint}>
-                  {row.label}
-                  {row.kind === 'score' && row.category && (
+                <th scope="row" title={hint}>
+                  {label}
+                  {row.kind === 'score' && (
                     <span className="ctable__weight">
-                      {Math.round(((weights[row.category] ?? 0) / weightSum) * 100)}%
+                      {fmt('{pct}%', { pct: Math.round(((weights[row.id] ?? 0) / weightSum) * 100) })}
                     </span>
                   )}
                 </th>
-                {evaluations.map((e) => {
-                  const isBest = row.value(e) === best;
-                  return (
-                    <td key={e.option.id} className={isBest ? 'ctable__best' : undefined}>
-                      {row.display(e)}
+                {evaluations.map((e) =>
+                  row.kind === 'score' ? (
+                    <td key={e.option.id} className={cellValue(e) === best ? 'ctable__best' : undefined}>
+                      {Math.round(e.scores[row.id])}
                     </td>
-                  );
-                })}
+                  ) : (
+                    <td key={e.option.id} className={row.value(e) === best ? 'ctable__best' : undefined}>
+                      {row.display(e, lang)}
+                    </td>
+                  ),
+                )}
               </tr>
             );
           })}
           <tr className="ctable__total">
-            <th scope="row">Weighted score</th>
+            <th scope="row">{t(UI.weightedScore)}</th>
             {evaluations.map((e) => (
               <td key={e.option.id}>
                 <strong>{Math.round(e.weighted)}</strong>
@@ -146,12 +151,12 @@ export function ComparisonTable({
             ))}
           </tr>
           <tr className="ctable__badges">
-            <th scope="row">Wins</th>
+            <th scope="row">{t(UI.wins)}</th>
             {evaluations.map((e) => (
               <td key={e.option.id}>
-                {HIGHLIGHT_ORDER.filter((k) => highlights[k] === e.option.id).map((k) => (
+                {HIGHLIGHT_KEYS.filter((k) => highlights[k] === e.option.id).map((k) => (
                   <span className={`badge badge--${k}`} key={k}>
-                    {HIGHLIGHT_LABEL[k]}
+                    {t(UI[k])}
                   </span>
                 ))}
               </td>

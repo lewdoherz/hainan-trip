@@ -6,7 +6,29 @@ A static web app that answers one question:
 
 It compares five realistic strategies — drive + ferry with our own car, fly to Haikou + rent, fly to Sanya + rent, HSR + the Qiongzhou Strait rail-ferry sleeper + rent, and a one-way fly-in-Haikou/fly-out-Sanya hybrid — across cost, door-to-door time, toddler comfort, reliability, transfers, island mobility, luggage capacity and stress.
 
+**Available in English and Simplified Chinese** (English / 中文 switch in the header).
+
 Everything is adjustable: weights, prices and durations are live inputs, and the recommendation, rankings and badges recalculate instantly. All edits persist in `localStorage`.
+
+## Languages / 语言
+
+The header has an EN / 中文 switch. The choice is saved in `localStorage`, updates `<html lang>` and the document title, and applies to **everything** — interface chrome, the researched prose, cost-line labels, timeline segments, assumption labels and units, and the generated scoring sentences ("¥6,879 — 25% more than…" becomes 「¥6,879 —— 比自驾 + 轮渡（¥5,524）贵 25%。」).
+
+Translations are structural, not best-effort. Every user-facing string is typed as:
+
+```ts
+export interface Bi { en: string; zh: string }
+```
+
+so a missing translation is a **compile error**, not a silent fallback to English.
+
+To add a language (or fix a translation):
+
+1. **Interface chrome** — `src/i18n/ui.ts` holds every label and generated template, keyed by name, with `{placeholders}` for interpolation.
+2. **Data prose** — each module under `src/data/` (and `src/data/options/`) carries its own `{ en, zh }` values next to the numbers they describe.
+3. Add the new language to the `Lang` union in `src/data/types.ts`, to `LANGS`/`HTML_LANG`/`LOCALE` in `src/i18n/lang.ts`, and TypeScript will point you at every remaining string.
+
+Dates and durations are formatted per locale (`formatDate`, `formatDuration` in `src/lib/format.ts`), so English reads "1 d 22 h" where Chinese reads 「1 天 22 小时」.
 
 ## Run it locally
 
@@ -43,11 +65,12 @@ Presentation and travel data are deliberately separated. To update the app for a
 | --- | --- |
 | `src/data/trip.ts` | Trip constants: travellers, dates, launch window, and every place with coordinates for the schematic map. |
 | `src/data/assumptions.ts` | **Every editable number** — fuel prices, tolls, ferry tickets, airfares, rental rates, child seats, buffers. Defaults carry a confidence label and a note saying what to replace them with. |
-| `src/data/transport-options.ts` | The five options: route legs, cost-line formulas, timelines, scores with written justifications, pros/cons and contingencies. |
+| `src/data/options/*.ts` | One file per transport option (drive + ferry, fly to Haikou, fly to Sanya, rail + rail-ferry sleeper, one-way hybrid): route legs, cost-line formulas, timelines, scores with written justifications, pros/cons and contingencies. `src/data/transport-options.ts` just collects them in order. |
 | `src/data/launch.ts` | Launch status and caveats, viewing spots, the launch-morning plan, noise guidance, postponement mechanics. |
 | `src/data/itinerary.ts` | The recommended six-night itinerary (and the own-car variant), plus the launch-slip contingency plan. |
 | `src/data/bases.ts` | Where to stay, activities with age suitability, and family logistics. |
 | `src/data/sources.ts` | Every source with its verification date, plus the honest statement of what could not be verified. |
+| `src/i18n/` | `ui.ts` (every interface label and generated sentence, in both languages) and `lang.ts` (the `Bi` resolver, `fill()` interpolation, locale map). |
 | `src/lib/` | The engines: cost lines, time model, weighted scoring, formatting, `localStorage` persistence. |
 
 ### Adding an editable number
@@ -113,6 +136,7 @@ These are the items where the app deliberately cannot promise anything:
 ## Design notes
 
 - React 18 + TypeScript + Vite, no UI framework and no runtime dependencies beyond React. All styling is hand-written CSS with design tokens in `src/styles.css`.
+- Bilingual EN/中文 throughout, enforced by the `Bi` type rather than convention. Locale-aware date and duration formatting.
 - The map is a hand-built SVG schematic with real coordinates, so it works offline and needs no API key or tile server; each place links out to Amap and Google Maps.
-- Section state is kept in the URL hash (`#costs`), so a tab can be linked or refreshed.
-- Responsive down to 390 px, with a wrapping tab bar on small screens.
+- Section state is kept in the URL hash (`#costs`), so a tab can be linked or refreshed, and the language choice is remembered separately in `localStorage`.
+- Responsive down to 390 px, with a wrapping tab bar on small screens, verified in both languages.

@@ -1,12 +1,21 @@
 import type { ReactNode } from 'react';
 import type { Confidence } from '../data/types';
-import { CONFIDENCE_HINT, CONFIDENCE_LABEL } from '../lib/format';
+import { useTrip } from '../state';
+import { UI } from '../i18n/ui';
 
-export function ConfidenceChip({ level, compact = false }: { level: Confidence; compact?: boolean }) {
+const CONFIDENCE_KEY: Record<Confidence, { label: keyof typeof UI; hint: keyof typeof UI }> = {
+  verified: { label: 'verified', hint: 'verifiedHint' },
+  estimate: { label: 'estimate', hint: 'estimateHint' },
+  assumption: { label: 'assumption', hint: 'assumptionHint' },
+};
+
+export function ConfidenceChip({ level }: { level: Confidence }) {
+  const { t } = useTrip();
+  const key = CONFIDENCE_KEY[level];
   return (
-    <span className={`chip chip--${level}`} title={CONFIDENCE_HINT[level]}>
+    <span className={`chip chip--${level}`} title={t(UI[key.hint])}>
       <span className="chip__dot" aria-hidden="true" />
-      {compact ? level : CONFIDENCE_LABEL[level]}
+      {t(UI[key.label])}
     </span>
   );
 }

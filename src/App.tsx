@@ -8,23 +8,46 @@ import { Launch } from './sections/Launch';
 import { Plan } from './sections/Plan';
 import { Sources } from './sections/Sources';
 import { TRIP } from './data/trip';
+import { LANGS } from './i18n/lang';
+import { UI } from './i18n/ui';
+import type { Bi } from './data/types';
 
-const TABS = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'compare', label: 'Compare' },
-  { id: 'routes', label: 'Routes' },
-  { id: 'costs', label: 'Costs' },
-  { id: 'launch', label: 'Launch' },
-  { id: 'plan', label: 'Hainan plan' },
-  { id: 'sources', label: 'Sources' },
-] as const;
+const TABS: { id: string; label: Bi }[] = [
+  { id: 'overview', label: UI.navOverview },
+  { id: 'compare', label: UI.navCompare },
+  { id: 'routes', label: UI.navRoutes },
+  { id: 'costs', label: UI.navCosts },
+  { id: 'launch', label: UI.navLaunch },
+  { id: 'plan', label: UI.navPlan },
+  { id: 'sources', label: UI.navSources },
+];
 
 type TabId = (typeof TABS)[number]['id'];
 
 const isTab = (value: string): value is TabId => TABS.some((t) => t.id === value);
 
+function LanguageSwitch() {
+  const { t, lang, setLang } = useTrip();
+  return (
+    <div className="lang" role="group" aria-label={t(UI.langSwitch)}>
+      {LANGS.map((l) => (
+        <button
+          type="button"
+          key={l.id}
+          className={`lang__btn${lang === l.id ? ' lang__btn--active' : ''}`}
+          aria-pressed={lang === l.id}
+          title={`${t(UI.langLabel)}: ${l.label}`}
+          onClick={() => setLang(l.id)}
+        >
+          {l.short}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function Shell() {
-  const { highlights } = useTrip();
+  const { t, fmt, highlights, lang } = useTrip();
   const [tab, setTab] = useState<TabId>(() => {
     const hash = window.location.hash.replace('#', '');
     return isTab(hash) ? hash : 'overview';
@@ -62,30 +85,36 @@ function Shell() {
               ▲
             </span>
             <div>
-              <div className="brand__title">Xiamen → Wenchang</div>
+              <div className="brand__title">{t(TRIP.title)}</div>
               <div className="brand__meta">
-                {TRIP.launch.dateLabel} · launch window tentative · {TRIP.nightsInHainan} nights in Hainan
+                {fmt(t(UI.brandMeta), {
+                  date: t(TRIP.launch.dateLabel),
+                  nights: TRIP.nightsInHainan,
+                })}
               </div>
             </div>
           </div>
-          <nav className="nav" aria-label="Sections">
-            {TABS.map((t) => (
-              <button
-                type="button"
-                key={t.id}
-                className={`nav__item${tab === t.id ? ' nav__item--active' : ''}`}
-                aria-current={tab === t.id ? 'page' : undefined}
-                onClick={() => go(t.id)}
-              >
-                {t.label}
-              </button>
-            ))}
-          </nav>
+          <div className="app__header-right">
+            <nav className="nav" aria-label={t(UI.navAria)}>
+              {TABS.map((item) => (
+                <button
+                  type="button"
+                  key={item.id}
+                  className={`nav__item${tab === item.id ? ' nav__item--active' : ''}`}
+                  aria-current={tab === item.id ? 'page' : undefined}
+                  onClick={() => go(item.id as TabId)}
+                >
+                  {t(item.label)}
+                </button>
+              ))}
+            </nav>
+            <LanguageSwitch />
+          </div>
         </div>
       </header>
 
       <main className="app__main">
-        <div className="container">
+        <div className="container" lang={lang === 'zh' ? 'zh-CN' : undefined}>
           {tab === 'overview' && <Overview onOpenOption={openOption} />}
           {tab === 'compare' && <Compare selectedOptionId={focusId} onSelectOption={setSelectedOptionId} />}
           {tab === 'routes' && <Routes selectedOptionId={focusId} onSelectOption={setSelectedOptionId} />}
@@ -98,13 +127,9 @@ function Shell() {
 
       <footer className="app__footer">
         <div className="container app__footer-inner">
-          <p>
-            A family decision aid, not a booking engine. Prices and durations are estimates or editable assumptions —
-            confirm them with the ferry operator, the airlines, the rental company and the official launch channels
-            before spending money.
-          </p>
+          <p>{t(UI.footerText)}</p>
           <button type="button" className="btn btn--chip" onClick={() => go('sources')}>
-            See sources and verification status
+            {t(UI.footerCta)}
           </button>
         </div>
       </footer>

@@ -4,6 +4,7 @@ import { RouteMap } from '../components/RouteMap';
 import { Callout, ConfidenceChip, ScoreBar, SectionHeader, Stat } from '../components/ui';
 import { formatCny, formatDuration } from '../lib/format';
 import { resolveTimeline } from '../lib/compute';
+import { UI } from '../i18n/ui';
 
 export function Routes({
   selectedOptionId,
@@ -12,7 +13,7 @@ export function Routes({
   selectedOptionId: string;
   onSelectOption: (id: string) => void;
 }) {
-  const { evaluations, byId, assumptions } = useTrip();
+  const { t, fmt, lang, evaluations, byId, assumptions } = useTrip();
   const ev = byId[selectedOptionId] ?? evaluations[0];
   const opt = ev.option;
 
@@ -23,9 +24,9 @@ export function Routes({
   return (
     <div className="stack">
       <SectionHeader
-        eyebrow="Routes"
-        title="The journey, hour by hour"
-        lede="Times are live: they recompute from the assumptions, so raising the ferry queue or the airport lead time immediately shows up here."
+        eyebrow={t(UI.routesEyebrow)}
+        title={t(UI.routesTitle)}
+        lede={t(UI.routesLede)}
         aside={
           <div className="chips chips--right">
             {evaluations.map((e) => (
@@ -36,7 +37,7 @@ export function Routes({
                 style={{ ['--accent' as string]: e.option.accent }}
                 onClick={() => onSelectOption(e.option.id)}
               >
-                {e.option.name}
+                {t(e.option.name)}
               </button>
             ))}
           </div>
@@ -44,36 +45,49 @@ export function Routes({
       />
 
       <div className="stats-row">
-        <Stat label="Round-trip transport" value={formatCny(ev.cost)} sub="Edit on the Costs tab" />
-        <Stat label="Outbound, door to door" value={formatDuration(ev.time.totalMinutes)} sub={`${formatDuration(ev.time.overnightMinutes)} of it asleep`} />
-        <Stat label="Awake travel time" value={formatDuration(ev.time.activeMinutes)} sub="The part that wears everyone down" />
-        <Stat label="Transfers" value={String(opt.transfers)} sub="Luggage and children moved again" tone={opt.transfers > 2 ? 'warn' : undefined} />
+        <Stat label={t(UI.statRoundTrip)} value={formatCny(ev.cost, lang)} sub={t(UI.statEditOnCosts)} />
+        <Stat
+          label={t(UI.doorToDoor)}
+          value={formatDuration(ev.time.totalMinutes, lang)}
+          sub={fmt(t(UI.statAsleep), { d: formatDuration(ev.time.overnightMinutes, lang) })}
+        />
+        <Stat
+          label={t(UI.statAwake)}
+          value={formatDuration(ev.time.activeMinutes, lang)}
+          sub={t(UI.statAwakeSub)}
+        />
+        <Stat
+          label={t(UI.statTransfers)}
+          value={String(opt.transfers)}
+          sub={t(UI.statTransfersSub)}
+          tone={opt.transfers > 2 ? 'warn' : undefined}
+        />
       </div>
 
       <section className="panel panel--pad">
         <div className="panel__head">
-          <h3 className="panel__title">{opt.name}</h3>
+          <h3 className="panel__title">{t(opt.name)}</h3>
           <ConfidenceChip level={opt.confidence} />
         </div>
-        <p className="route__verdict">{opt.verdict}</p>
+        <p className="route__verdict">{t(opt.verdict)}</p>
 
         <div className="route__layout">
           <div className="route__map">
             <RouteMap legs={opt.legs} visiblePlaceIds={visiblePlaceIds} accent={opt.accent} />
           </div>
           <div className="route__legs">
-            <h4 className="route__subtitle">Legs</h4>
+            <h4 className="route__subtitle">{t(UI.legs)}</h4>
             <ol className="leg-list">
               {opt.legs.map((leg) => (
                 <li key={leg.id} className={`leg-list__item leg-list__item--${leg.mode}`}>
                   <div className="leg-list__head">
-                    <span className="leg-list__label">{leg.label}</span>
+                    <span className="leg-list__label">{t(leg.label)}</span>
                     <span className="leg-list__mode">{leg.mode}</span>
                   </div>
                   <div className="leg-list__meta">
-                    {leg.distance} · {leg.duration}
+                    {t(leg.distance)} · {t(leg.duration)}
                   </div>
-                  {leg.note && <div className="leg-list__note">{leg.note}</div>}
+                  {leg.note && <div className="leg-list__note">{t(leg.note)}</div>}
                 </li>
               ))}
             </ol>
@@ -82,47 +96,47 @@ export function Routes({
       </section>
 
       <section className="panel panel--pad">
-        <h3 className="panel__title">Timeline</h3>
+        <h3 className="panel__title">{t(UI.timeline)}</h3>
         <Timeline groups={resolveTimeline(opt, assumptions)} assumptions={assumptions} />
       </section>
 
       <div className="grid grid--2">
         <section className="panel panel--pad">
-          <h3 className="panel__title">Family reality check</h3>
+          <h3 className="panel__title">{t(UI.familyReality)}</h3>
           <div className="practical">
-            {opt.practical.map((p) => (
-              <div className={`practical__row practical__row--${p.tone ?? 'neutral'}`} key={p.label}>
-                <span className="practical__label">{p.label}</span>
-                <span className="practical__value">{p.value}</span>
+            {opt.practical.map((p, i) => (
+              <div className={`practical__row practical__row--${p.tone ?? 'neutral'}`} key={i}>
+                <span className="practical__label">{t(p.label)}</span>
+                <span className="practical__value">{t(p.value)}</span>
               </div>
             ))}
           </div>
           <div className="score-stack">
-            <ScoreBar score={ev.scores.family} label="Toddler comfort" tone="coral" />
-            <ScoreBar score={ev.scores.reliability} label="Reliability" tone="teal" />
-            <ScoreBar score={ev.scores.transfers} label="Few transfers" tone="gold" />
-            <ScoreBar score={ev.scores.mobility} label="Car freedom" tone="sky" />
-            <ScoreBar score={ev.scores.luggage} label="Baby gear capacity" tone="plum" />
-            <ScoreBar score={ev.scores.stress} label="Low stress" tone="teal" />
+            <ScoreBar score={ev.scores.family} label={t(UI.toddlerComfort)} tone="coral" />
+            <ScoreBar score={ev.scores.reliability} label={t(UI.reliability)} tone="teal" />
+            <ScoreBar score={ev.scores.transfers} label={t(UI.scoreFewTransfers)} tone="gold" />
+            <ScoreBar score={ev.scores.mobility} label={t(UI.scoreCarFreedom)} tone="sky" />
+            <ScoreBar score={ev.scores.luggage} label={t(UI.scoreBabyGear)} tone="plum" />
+            <ScoreBar score={ev.scores.stress} label={t(UI.lowStress)} tone="teal" />
           </div>
         </section>
 
         <section className="panel panel--pad">
-          <h3 className="panel__title">Advantages and costs</h3>
+          <h3 className="panel__title">{t(UI.advantagesCosts)}</h3>
           <div className="proscons">
             <div>
-              <h4 className="proscons__title proscons__title--good">In favour</h4>
+              <h4 className="proscons__title proscons__title--good">{t(UI.inFavour)}</h4>
               <ul className="bullets bullets--good">
-                {opt.pros.map((p) => (
-                  <li key={p}>{p}</li>
+                {opt.pros.map((p, i) => (
+                  <li key={i}>{t(p)}</li>
                 ))}
               </ul>
             </div>
             <div>
-              <h4 className="proscons__title proscons__title--bad">Against</h4>
+              <h4 className="proscons__title proscons__title--bad">{t(UI.against)}</h4>
               <ul className="bullets bullets--bad">
-                {opt.cons.map((c) => (
-                  <li key={c}>{c}</li>
+                {opt.cons.map((c, i) => (
+                  <li key={i}>{t(c)}</li>
                 ))}
               </ul>
             </div>
@@ -131,15 +145,14 @@ export function Routes({
       </div>
 
       <section className="panel panel--pad">
-        <h3 className="panel__title">If the plan breaks</h3>
+        <h3 className="panel__title">{t(UI.ifPlanBreaks)}</h3>
         <ul className="contingencies">
-          {opt.contingencies.map((c) => (
-            <li key={c}>{c}</li>
+          {opt.contingencies.map((c, i) => (
+            <li key={i}>{t(c)}</li>
           ))}
         </ul>
-        <Callout tone="warn" title="Nothing here is bookable">
-          This is a decision aid, not a booking tool. Every price and duration is an estimate or an editable
-          assumption — confirm on the operator's own channel before committing money.
+        <Callout tone="warn" title={t(UI.nothingBookable)}>
+          {t(UI.nothingBookableText)}
         </Callout>
       </section>
     </div>
