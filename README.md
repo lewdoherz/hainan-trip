@@ -49,11 +49,20 @@ No backend, no API keys, no runtime data fetching. The build output in `dist/` i
 
 ## Deploy
 
+**Live site:** https://lewdoherz.github.io/hainan-trip/
+
 **GitHub Pages (default).** The workflow in `.github/workflows/deploy.yml` builds and publishes on every push to `main`. Vite is configured with `base: './'`, so the site works at a project URL (`https://<user>.github.io/<repo>/`) as well as at a domain root.
 
 1. Push the repository to GitHub.
-2. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
+2. **Settings → Pages → Build and deployment → Source: GitHub Actions** (already enabled for this repo).
 3. Push to `main` (or run the workflow manually). The site appears at the Pages URL.
+
+If `github.com` is unreachable from your network but the API host is not, use GitHub's SSH endpoint on port 443:
+
+```bash
+git remote set-url origin ssh://git@ssh.github.com:443/lewdoherz/hainan-trip.git
+git push -u origin main
+```
 
 **Anywhere else.** `bun run build` and upload `dist/` — Netlify, Vercel, Cloudflare Pages, S3, or a USB stick. Because the app is entirely client-side and reads no live data, there is nothing to configure.
 

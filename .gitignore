@@ -7,4 +7,4 @@ dist-ssr
 *.log
 
 # Local browser profiles created while verifying the app in a headless Chromium
-.chrome-profile*
+.chrome-*
