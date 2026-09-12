@@ -49,22 +49,21 @@ No backend, no API keys, no runtime data fetching. The build output in `dist/` i
 
 ## Deploy
 
-**Live site:** https://lewdoherz.github.io/hainan-trip/
+The workflow in `.github/workflows/deploy.yml` builds and publishes to GitHub Pages on every push to `main`, and Vite is configured with `base: './'` so the site works at a project URL (`https://<user>.github.io/<repo>/`) as well as at a domain root.
 
-**GitHub Pages (default).** The workflow in `.github/workflows/deploy.yml` builds and publishes on every push to `main`. Vite is configured with `base: './'`, so the site works at a project URL (`https://<user>.github.io/<repo>/`) as well as at a domain root.
+> **Note on this repository.** It is currently **private**, and GitHub Pages on a private repository requires a paid plan — the API says so explicitly: *"Your current plan does not support GitHub Pages for this repository."* The first deploy therefore worked while the repository was public, and the deploy job will fail with a 404 from `actions/deploy-pages` until either the repository is made public or the account is upgraded.
 
-1. Push the repository to GitHub.
-2. **Settings → Pages → Build and deployment → Source: GitHub Actions** (already enabled for this repo).
-3. Push to `main` (or run the workflow manually). The site appears at the Pages URL.
+**To publish it, pick one:**
 
-If `github.com` is unreachable from your network but the API host is not, use GitHub's SSH endpoint on port 443:
+1. **Make the repository public** — Settings → General → Danger Zone → Change visibility → Public. Then re-run the `Deploy to GitHub Pages` workflow (Actions → Deploy to GitHub Pages → Run workflow), and set Settings → Pages → Source to **GitHub Actions**. Free, and the workflow in the repo already does the rest.
+2. **Keep it private and use a host that allows private repositories** — Cloudflare Pages, Netlify and Vercel all deploy private GitHub repos on their free tiers: connect the repo, set the build command to `bun run build` and the output directory to `dist`.
+3. **Keep it private with no CI** — `bun run build`, then drag the `dist/` folder onto Netlify Drop or Cloudflare Pages' direct-upload page. No repository connection needed.
+
+Local preview of the production build:
 
 ```bash
-git remote set-url origin ssh://git@ssh.github.com:443/lewdoherz/hainan-trip.git
-git push -u origin main
+bun run build && bun run preview
 ```
-
-**Anywhere else.** `bun run build` and upload `dist/` — Netlify, Vercel, Cloudflare Pages, S3, or a USB stick. Because the app is entirely client-side and reads no live data, there is nothing to configure.
 
 ## Where the data lives
 
