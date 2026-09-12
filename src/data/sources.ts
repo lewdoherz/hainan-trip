@@ -8,6 +8,82 @@ import type { Source } from './types';
  */
 export const SOURCES: Source[] = [
   {
+    id: 'flightradar24',
+    label: {
+      en: 'Flightradar24 — live Xiamen departures and per-flight schedule history',
+      zh: 'Flightradar24 — 厦门出港实时航班与单班历史时刻',
+    },
+    url: 'https://www.flightradar24.com/data/airports/xmn/departures',
+    publisher: 'Flightradar24',
+    kind: 'platform',
+    verifiedAt: '2026-09-12',
+    note: {
+      en: 'Used to confirm or correct every flight in your screenshots: MF8341 12:50→14:55 and MF8397 08:40→11:00 both check out; the screenshot’s “MF8597” is in fact a Changsha–Korla service, so MF8397 is the right number. The only daily HAK→XMN service found is HU7047 at 07:20→09:25, so the 09:20 return in the screenshot could not be confirmed.',
+      zh: '用于核对截图中的每一段航班：MF8341 12:50→14:55 与 MF8397 08:40→11:00 均可确认；截图中的“MF8597”实为长沙—库尔勒航班，正确的航班号是 MF8397。可查到的海口→厦门每日航班只有 HU7047（07:20→09:25），因此截图中的 09:20 返程无法确认。',
+    },
+  },
+  {
+    id: 'beach-bases',
+    label: {
+      en: 'Beach-base comparison — Trip.com live rates, Wikipedia climate tables, Chinese safety reporting',
+      zh: '海滩落脚点对比 —— 携程实时房价、维基百科气候数据、中文安全报道',
+    },
+    url: 'https://www.trip.com/hotels/list?city=55',
+    publisher: 'Trip.com, Wikipedia (CMA normals), Chinese news reporting',
+    kind: 'platform',
+    verifiedAt: '2026-09-12',
+    note: {
+      en: 'Source of the beach verdicts: Clearwater Bay’s 200 m of wading under 2 m and Class I water; the surf warning at Riyue Bay (1–2 m average waves); the swimming ban and rip currents at Boao Yudai Beach; the August 2025 drowning and 17 July rescues at Shimei Bay; September rainfall by city; hospital grades (301 Hainan in Haitang, Lingshui 二级甲等, Wenchang 三级甲等); and the September typhoon norms (1.7 systems affecting the province, 0.5 landfalls).',
+      zh: '海滩结论的来源：清水湾外行 200 米水深仍不足 2 米、一类海水；日月湾平均浪高 1–2 米；博鳌玉带滩禁止下海且有离岸流；石梅湾 2025 年 8 月溺亡事件与 7 月 17 次救援；各城市九月降雨量；医院等级（海棠湾 301 海南医院、陵水二级甲等、文昌三级甲等）；九月台风气候均值（影响全省 1.7 个、登陆 0.5 个）。',
+    },
+  },
+  {
+    id: 'sina-car-guide',
+    label: {
+      en: 'Sina — Hainan car-rental price guide (4 September 2026)',
+      zh: '新浪 — 海南租车价格指南（2026 年 9 月 4 日）',
+    },
+    url: 'https://k.sina.cn/article_7879776512_1d5abd90006801g2mw.html',
+    publisher: '新浪 (Sina)',
+    kind: 'secondary',
+    verifiedAt: '2026-09-12',
+    note: {
+      en: 'Vehicle-class day rates (7-seat MPV ¥350–550), one-way fees, the ¥1,500–3,000 insurance excess and the ~¥50/day zero-excess upgrade, deposits of ¥2,000–3,000 or card pre-authorisation of ¥5,000–20,000, and deposit-free rental with a Zhima Credit score of 650+.',
+      zh: '各车型日租金（7 座商务车 ¥350–550）、异地还车费、¥1,500–3,000 的保险免赔额与约 ¥50/天的不计免赔、¥2,000–3,000 押金或 ¥5,000–20,000 信用卡预授权，以及芝麻信用 650 分以上可免押金。',
+    },
+  },
+  {
+    id: 'th-didi',
+    label: {
+      en: 'Tropical Hainan — driving vs DiDi, and Meilan airport parking',
+      zh: 'Tropical Hainan — 自驾与滴滴对比、美兰机场停车',
+    },
+    url: 'https://www.tropicalhainan.com/driving-vs-didi-whats-the-best-way-to-get-to-haikou-meilan-airport/',
+    publisher: 'Tropical Hainan',
+    kind: 'secondary',
+    verifiedAt: '2026-09-12',
+    note: {
+      en: 'Meilan airport parking at ¥50 per 24 hours in the garage and ¥30 outdoors, and a DiDi baseline for the Island.',
+      zh: '美兰机场楼内停车每 24 小时 ¥50、室外 ¥30，以及岛内滴滴的参考价格。',
+    },
+  },
+  {
+    id: 'user-screenshots',
+    label: {
+      en: 'Your booking-app screenshots (11 images, 15–21 September 2026 quotes)',
+      zh: '你的预订截图（11 张，2026 年 9 月 15–21 日报价）',
+    },
+    url: '',
+    publisher: 'Ctrip app screenshots, provided by you',
+    kind: 'platform',
+    verifiedAt: '2026-09-12',
+    note: {
+      en: 'The flight quotes and every hotel and villa price on the Budget page come from these images. This build environment had no vision model, so they were read with Windows OCR (zh-Hans engine) at 3× scale. The text is genuine, but OCR can misread a digit — treat the numbers as “your screenshot, unverified” and correct anything that matters.',
+      zh: '预算页中的机票报价以及全部酒店、别墅价格均来自这些截图。本构建环境没有视觉模型，因此使用 Windows OCR（简体中文引擎）在 3 倍放大下读取。文字内容真实，但 OCR 可能识别错数字 —— 请视作“你的截图，未经核实”，并核对关键金额。',
+    },
+  },
+
+  {
     id: 'rail12306',
     label: { en: 'China Railway 12306 — timetables, fares and ticket rules', zh: '中国铁路12306 — 时刻表、票价与购票规定' },
     url: 'https://www.12306.cn/',
@@ -149,7 +225,7 @@ export const SOURCES: Source[] = [
     publisher: '海南日报 · 南海网',
     kind: 'secondary',
     verifiedAt: '2026-09-11',
-    note: { en: 'Describes the official viewing venues — 文昌航天观礼中心 with its Moon and Sun towers at about 2 km from the commercial spaceport, and the 瑶光观礼平台 — plus the 16 August 2026 launch watched by 1,900 people, 21 launches from both Wenchang sites in 2025, and Longlou’s 150+ hotels at 90–95%+ launch-night occupancy.', zh: '介绍官方观看场地 — 文昌航天观礼中心及其距商业航天发射场约2公里的月亮塔和太阳塔，以及瑶光观礼平台 — 并提到2026年8月16日发射有1,900人观看、2025年文昌两个发射场共发射21次，以及龙楼150多家酒店在发射当晚入住率达90–95%以上。' },
+    note: { en: 'Describes the official viewing venues — 文昌航天观礼中心 with its Moon and Sun towers at about 2 km from the commercial spaceport, and the 瑶光观礼平台 — plus the 16 August 2026 launch watched by 1,900 people, 21 launches from both Wenchang sites in 2025, and Longlou’s 150+ hotels at over 90% launch-night occupancy.', zh: '介绍官方观看场地 — 文昌航天观礼中心及其距商业航天发射场约2公里的月亮塔和太阳塔，以及瑶光观礼平台 — 并提到2026年8月16日发射有1,900人观看、2025年文昌两个发射场共发射21次，以及龙楼150多家酒店在发射当晚入住率超过90%。' },
   },
   {
     id: 'cz12-history',

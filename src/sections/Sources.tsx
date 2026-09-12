@@ -53,6 +53,10 @@ export function Sources() {
               <span>{t(UI.legendVerified)}</span>
             </li>
             <li>
+              <ConfidenceChip level="screenshot" />
+              <span>{t(UI.screenshotHint)}</span>
+            </li>
+            <li>
               <ConfidenceChip level="estimate" />
               <span>{t(UI.legendEstimate)}</span>
             </li>

@@ -5,6 +5,7 @@ import { UI } from '../i18n/ui';
 
 const CONFIDENCE_KEY: Record<Confidence, { label: keyof typeof UI; hint: keyof typeof UI }> = {
   verified: { label: 'verified', hint: 'verifiedHint' },
+  screenshot: { label: 'screenshot', hint: 'screenshotHint' },
   estimate: { label: 'estimate', hint: 'estimateHint' },
   assumption: { label: 'assumption', hint: 'assumptionHint' },
 };

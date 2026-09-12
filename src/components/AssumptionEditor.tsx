@@ -3,16 +3,18 @@ import { useTrip } from '../state';
 import { UI } from '../i18n/ui';
 import { ConfidenceChip } from './ui';
 
-export function AssumptionEditor() {
+export function AssumptionEditor({ groups }: { groups?: string[] }) {
   const { t, fmt, assumptions, setAssumption, resetAssumptions } = useTrip();
+  const defs = groups ? ASSUMPTION_DEFS.filter((d) => groups.includes(d.group)) : ASSUMPTION_DEFS;
+  const shownGroups = groups ? ASSUMPTION_GROUPS.filter((g) => groups.includes(g.id)) : ASSUMPTION_GROUPS;
 
   return (
     <div className="assume">
       <div className="assume__toolbar">
         <span className="assume__count">
           {fmt(t(UI.assumeChangedCount), {
-            n: ASSUMPTION_DEFS.filter((d) => assumptions[d.key] !== d.def).length,
-            total: ASSUMPTION_DEFS.length,
+            n: defs.filter((d) => assumptions[d.key] !== d.def).length,
+            total: defs.length,
           })}
         </span>
         <button type="button" className="btn btn--chip btn--chip-quiet" onClick={resetAssumptions}>
@@ -20,9 +22,9 @@ export function AssumptionEditor() {
         </button>
       </div>
 
-      {ASSUMPTION_GROUPS.map((group) => {
-        const defs = ASSUMPTION_DEFS.filter((d) => d.group === group.id);
-        if (defs.length === 0) return null;
+      {shownGroups.map((group) => {
+        const groupDefs = defs.filter((d) => d.group === group.id);
+        if (groupDefs.length === 0) return null;
         return (
           <section className="assume__group" key={group.id}>
             <header className="assume__group-head">
@@ -30,7 +32,7 @@ export function AssumptionEditor() {
               <p>{t(group.hint)}</p>
             </header>
             <div className="assume__rows">
-              {defs.map((def) => {
+              {groupDefs.map((def) => {
                 const value = assumptions[def.key];
                 const changed = value !== def.def;
                 const unit = t(def.unit);

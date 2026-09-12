@@ -1,17 +1,26 @@
 import { useTrip } from '../state';
+import { useMemo } from 'react';
+import { rankBudgets } from '../lib/budget';
 import { TRIP } from '../data/trip';
 import { LAUNCH_STATUS } from '../data/launch';
 import { Countdown } from '../components/Countdown';
 import { OptionCard } from '../components/OptionCard';
 import { RecommendationBanner } from '../components/RecommendationBanner';
 import { Callout, Pill, SectionHeader } from '../components/ui';
-import { formatDate } from '../lib/format';
+import { formatCny, formatDate } from '../lib/format';
 import { UI } from '../i18n/ui';
 
 const HIGHLIGHT_KEYS = ['bestOverall', 'cheapest', 'fastest', 'easiest', 'mostFlexible'] as const;
 
-export function Overview({ onOpenOption }: { onOpenOption: (id: string) => void }) {
-  const { t, fmt, lang, evaluations, highlights, weights } = useTrip();
+export function Overview({
+  onOpenOption,
+  onOpenBudget,
+}: {
+  onOpenOption: (id: string) => void;
+  onOpenBudget: () => void;
+}) {
+  const { t, fmt, lang, evaluations, highlights, weights, assumptions } = useTrip();
+  const { picks } = useMemo(() => rankBudgets(assumptions), [assumptions]);
   const dateRange = `${formatDate(TRIP.tripStart, lang, { year: undefined })} – ${formatDate(TRIP.tripEnd, lang, { year: undefined })}`;
 
   return (
@@ -27,6 +36,7 @@ export function Overview({ onOpenOption }: { onOpenOption: (id: string) => void 
           <div className="hero__meta">
             <Pill tone="teal">{fmt(t(UI.adultsPill), { n: TRIP.travelers.adults })}</Pill>
             <Pill tone="coral">{t(UI.kidsPill)}</Pill>
+            <Pill tone="sky">{t(UI.grandmotherPill)}</Pill>
             <Pill tone="sand">{fmt(t(UI.nightsPill), { n: TRIP.nightsInHainan })}</Pill>
             <Pill tone="sand">{dateRange}</Pill>
           </div>
@@ -60,6 +70,30 @@ export function Overview({ onOpenOption }: { onOpenOption: (id: string) => void 
         winnerId={highlights.bestOverall}
         onOpen={onOpenOption}
       />
+
+      <section className="panel panel--pad budget-banner">
+        <div>
+          <div className="eyebrow">{t(UI.overviewBudgetTitle)}</div>
+          <div className="bigtotal__value">{formatCny(picks.bestValue.result.total, lang)}</div>
+          <div className="bigtotal__meta">
+            {fmt(t(UI.overviewBudgetMeta), { nights: picks.bestValue.result.nights })}
+          </div>
+          <div className="hero__meta">
+            <Pill tone="good">
+              {t(UI.overviewBudgetValue)} · {t(picks.bestValue.pkg.name)}
+            </Pill>
+            <Pill tone="sand">
+              {t(UI.overviewBudgetCheapest)} · {formatCny(picks.cheapest.result.total, lang)}
+            </Pill>
+          </div>
+        </div>
+        <div className="budget-banner__right">
+          <p className="panel__text">{t(UI.budgetLede)}</p>
+          <button type="button" className="btn btn--primary" onClick={onOpenBudget}>
+            {t(UI.overviewBudgetCta)}
+          </button>
+        </div>
+      </section>
 
       <section>
         <SectionHeader eyebrow={t(UI.shortlistEyebrow)} title={t(UI.shortlistTitle)} lede={t(UI.shortlistLede)} />

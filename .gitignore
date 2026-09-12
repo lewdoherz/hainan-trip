@@ -8,3 +8,7 @@ dist-ssr
 
 # Local browser profiles created while verifying the app in a headless Chromium
 .chrome-*
+
+# Raw OCR dumps of the family's booking screenshots (contain passport/ID numbers)
+.ocr/in/
+.ocr/out/

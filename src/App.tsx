@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TripProvider, useTrip } from './state';
 import { Overview } from './sections/Overview';
+import { Budget } from './sections/Budget';
 import { Compare } from './sections/Compare';
 import { Routes } from './sections/Routes';
 import { Costs } from './sections/Costs';
@@ -14,6 +15,7 @@ import type { Bi } from './data/types';
 
 const TABS: { id: string; label: Bi }[] = [
   { id: 'overview', label: UI.navOverview },
+  { id: 'budget', label: UI.navBudget },
   { id: 'compare', label: UI.navCompare },
   { id: 'routes', label: UI.navRoutes },
   { id: 'costs', label: UI.navCosts },
@@ -115,7 +117,8 @@ function Shell() {
 
       <main className="app__main">
         <div className="container" lang={lang === 'zh' ? 'zh-CN' : undefined}>
-          {tab === 'overview' && <Overview onOpenOption={openOption} />}
+          {tab === 'overview' && <Overview onOpenOption={openOption} onOpenBudget={() => go('budget')} />}
+          {tab === 'budget' && <Budget />}
           {tab === 'compare' && <Compare selectedOptionId={focusId} onSelectOption={setSelectedOptionId} />}
           {tab === 'routes' && <Routes selectedOptionId={focusId} onSelectOption={setSelectedOptionId} />}
           {tab === 'costs' && <Costs selectedOptionId={focusId} onSelectOption={setSelectedOptionId} />}

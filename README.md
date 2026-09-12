@@ -76,11 +76,12 @@ Presentation and travel data are deliberately separated. To update the app for a
 | `src/data/assumptions.ts` | **Every editable number** — fuel prices, tolls, ferry tickets, airfares, rental rates, child seats, buffers. Defaults carry a confidence label and a note saying what to replace them with. |
 | `src/data/options/*.ts` | One file per transport option (drive + ferry, fly to Haikou, fly to Sanya, rail + rail-ferry sleeper, one-way hybrid): route legs, cost-line formulas, timelines, scores with written justifications, pros/cons and contingencies. `src/data/transport-options.ts` just collects them in order. |
 | `src/data/launch.ts` | Launch status and caveats, viewing spots, the launch-morning plan, noise guidance, postponement mechanics. |
-| `src/data/itinerary.ts` | The recommended six-night itinerary (and the own-car variant), plus the launch-slip contingency plan. |
+| `src/data/itinerary.ts` | Two itineraries for five travellers — five nights home from Sanya (recommended) and six nights home from Haikou — plus the launch-slip contingency plan. |
 | `src/data/bases.ts` | Where to stay, activities with age suitability, and family logistics. |
+| `src/data/budget.ts` | The trip budget: your four flight quotes, every Wenchang and Clearwater Bay room and villa price, and the five package shapes. |
 | `src/data/sources.ts` | Every source with its verification date, plus the honest statement of what could not be verified. |
 | `src/i18n/` | `ui.ts` (every interface label and generated sentence, in both languages) and `lang.ts` (the `Bi` resolver, `fill()` interpolation, locale map). |
-| `src/lib/` | The engines: cost lines, time model, weighted scoring, formatting, `localStorage` persistence. |
+| `src/lib/` | The engines: cost lines, time model, weighted scoring, **`budget.ts`** (trip totals and the value score), formatting, `localStorage` persistence. |
 
 ### Adding an editable number
 
@@ -112,7 +113,7 @@ It then appears in the Costs tab automatically, and any option's `costLines` fun
 
 ## What the app currently concludes
 
-With the default weights and defaults, the ranking is:
+**Transport** (with the default weights):
 
 | Option | Score | Wins |
 | --- | --- | --- |
@@ -122,7 +123,25 @@ With the default weights and defaults, the ranking is:
 | Drive + ferry (own car) | 64 | Cheapest, Most flexible |
 | HSR + rail-ferry sleeper + rent | 55 | — |
 
-That is a 2-point gap between the top two, which is noise — the app is meant to be argued with. Switching the preset to **Cheapest** still leaves the Haikou flight on top (a two-day drive buys almost nothing once the ferry, tolls, hotels and time are counted), and **Toddler first** widens the flight's lead. The genuine decision is *which airport and whether the car is one-way*, and the app lets you settle that with sliders rather than vibes.
+**Trip budget** (five travellers, using your own screenshots for flights and accommodation):
+
+| Shape | Total | Value | Note |
+| --- | --- | --- | --- |
+| Cheapest flights: in via Sanya, out via Haikou | **¥14,949** | 63 | Saves ¥1,000 on airfare but adds two long north–south drives and a pre-dawn start |
+| **Hotels · 5 nights · home from Sanya** | **¥15,565** | **69** | Best value: one-way drive, 2 beach nights in hotel rooms, no backtracking |
+| Pool villa · 5 nights · home from Sanya | ¥16,001 | 64 | ¥436 more than the hotel shape, buys a private pool, a kitchen and grandma her own bedroom |
+| Hotels · 6 nights · home from Haikou | ¥16,081 | 35 | The extra beach night costs a 3-hour drive back north and a 09:20 departure |
+| Pool villa · 6 nights · home from Haikou | ¥16,965 | 19 | Most comfortable on paper, worst on logistics and price |
+
+The headline finding is that **the five shapes sit within ¥2,016 of each other — about 13% of the trip**. That is small enough that this should be a comfort decision rather than a price decision, which is why the value column weights cost and comfort equally (50/50) instead of letting the cheapest shape win by default.
+
+The villa is the interesting case: over two beach nights it costs ¥436 more than two hotel rooms, and self-catering claws back roughly ¥1,100 in food — so it is close to break-even *and* gives the grandmother her own bedroom. Over three nights the villa's extra night rate outruns the food saving.
+
+## How the screenshots were read
+
+This build environment has no vision model, so the 11 booking-app screenshots were read with **Windows' built-in OCR engine** (`Windows.Media.Ocr`, zh-Hans, at 3× scale — see `.ocr/ocr2.ps1`). The extracted text is genuine, but OCR can misread a digit, so those figures carry their own confidence level — **“From your screenshot”** — distinct from Verified/Estimate/Assumption, and every one of them is editable in the Budget tab.
+
+OCR is why some flight numbers are recorded as ambiguous (MF8541 / MF8341): the digits were not legible enough to be certain, and the app says so rather than picking one.
 
 ## Confidence labels
 
@@ -141,6 +160,10 @@ These are the items where the app deliberately cannot promise anything:
 5. **Rental rates**, the one-way drop-off fee, and — critically — whether an infant car seat can actually be reserved.
 6. **Rail tickets.** 12306 opens sales 15 days ahead; Guangzhou Baiyun → Haikou sleeper berths sell out quickly.
 7. **Typhoon risk.** Mid-September is peak season; a warning changes both the ferry and the flight picture (check 中国天气网).
+8. **Every price read out of your screenshots** — the four airfares, all the hotel and villa rates — because OCR can misread a digit. They are labelled “From your screenshot” and are editable in the Budget tab.
+9. **Car hire for five.** Whether a 7-seat MPV is available at the rate assumed, and — critically — whether an infant car seat can actually be reserved in Hainan.
+10. **Launch-night availability in Longlou.** The 90–95% occupancy figure is verified, and the Fulou rates in your screenshot are for 16–18 September, so book early.
+11. **Whether launch viewing needs a ticket this time,** and whether children and infants are ticketed. The budget leaves a line for this, defaulted to zero.
 
 ## Design notes
 

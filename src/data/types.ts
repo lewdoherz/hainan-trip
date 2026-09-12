@@ -15,8 +15,12 @@ export interface Bi {
   zh: string;
 }
 
-/** How much we trust a figure. */
-export type Confidence = 'verified' | 'estimate' | 'assumption';
+/**
+ * How much we trust a figure.
+ * `screenshot` = read out of the user's own booking-app screenshots (via OCR),
+ * so it is a real quote, but the digits have not been independently confirmed.
+ */
+export type Confidence = 'verified' | 'screenshot' | 'estimate' | 'assumption';
 
 export type SourceKind = 'official' | 'operator' | 'platform' | 'secondary';
 
@@ -188,7 +192,7 @@ export interface Place {
 // Editable assumptions
 // ---------------------------------------------------------------------------
 
-export type AssumptionGroup = 'drive' | 'ferry' | 'flight' | 'rental' | 'train' | 'family';
+export type AssumptionGroup = 'drive' | 'ferry' | 'flight' | 'rental' | 'train' | 'family' | 'budget';
 
 export interface AssumptionDef {
   key: string;
@@ -245,8 +249,92 @@ export interface LaunchFact {
 }
 
 // ---------------------------------------------------------------------------
-// Itinerary
+// Budget planner
 // ---------------------------------------------------------------------------
+
+export type StayArea = 'wenchang' | 'beach';
+
+export interface RoomType {
+  id: string;
+  name: Bi;
+  /** Nightly rate per room or per villa, from the source named on the stay. */
+  price: number;
+  bedrooms?: number;
+  /** How many people the room happily holds, e.g. "2 adults + 2 children free". */
+  capacity?: Bi;
+  note?: Bi;
+}
+
+export interface LodgingOption {
+  id: string;
+  name: Bi;
+  cn: string;
+  area: StayArea;
+  kind: 'hotel' | 'villa' | 'homestay';
+  rooms: RoomType[];
+  /** Rooms the family must book in this property to sleep five people. */
+  roomsNeeded: number;
+  note?: Bi;
+  caveat?: Bi;
+  confidence: Confidence;
+  sourceIds: string[];
+}
+
+export interface FlightQuote {
+  id: string;
+  direction: 'out' | 'back';
+  date: string;
+  fromCode: string;
+  toCode: string;
+  carrier: Bi;
+  depart: string;
+  arrive?: string;
+  /** Total for the four paying travellers (2 adults, 1 child, 1 infant). */
+  total: number;
+  breakdown?: Bi;
+  note?: Bi;
+  confidence: Confidence;
+}
+
+export interface BudgetLine {
+  id: string;
+  label: Bi;
+  amount: number;
+  confidence: Confidence;
+  note?: Bi;
+  /** Grouping for the itemised table. */
+  group: 'flights' | 'stay' | 'car' | 'food' | 'extras';
+}
+
+export interface BudgetConfig {
+  /** Ids of the chosen quotes; the grandmother's own ticket is excluded. */
+  outFlightId: string;
+  backFlightId: string;
+  wenchangRoomId: string;
+  beachRoomId: string;
+  wenchangNights: number;
+  beachNights: number;
+  /** Rooms booked at the beach property, so the grandmother gets her own. */
+  beachRooms: number;
+  foodMode: FoodMode;
+  carClass: CarClass;
+}
+
+export type FoodMode = 'villa' | 'mixed' | 'restaurant';
+export type CarClass = 'suv' | 'mpv';
+
+export interface BudgetPackage {
+  id: string;
+  name: Bi;
+  subtitle: Bi;
+  /** The shape of the trip in one line, e.g. "In via Haikou, out of Sanya, 5 nights". */
+  shape: Bi;
+  config: BudgetConfig;
+  /** Driving burden this shape implies, for the trade-off note. */
+  driveNote: Bi;
+  tag?: Bi;
+}
+
 
 export interface ItineraryDay {
   date: string; // ISO

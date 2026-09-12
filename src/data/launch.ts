@@ -82,7 +82,7 @@ export const LAUNCH_FACTS: LaunchFact[] = [
   },
   {
     label: { en: 'Launch-day accommodation', zh: '发射当天住宿' },
-    value: { en: 'Longlou has 150+ hotels and homestays, at 90–95%+ occupancy', zh: '龙楼有 150 多家酒店和民宿，入住率达 90–95% 以上' },
+    value: { en: 'Longlou has 150+ hotels and homestays, at over 90% occupancy', zh: '龙楼有 150 多家酒店和民宿，入住率超过 90%' },
     confidence: 'verified',
     note: { en: 'Locals describe launch nights as 一房难求 — "one room hard to find". Book now, and book a rate you can cancel, because a slip strands a non-refundable room.', zh: '当地人形容发射当晚“一房难求”。现在就要预订，而且要订可取消的价格，因为一旦推迟，不可退款的房间就砸在手里了。' },
   },
@@ -280,8 +280,8 @@ export const VIEWING_SPOTS: ViewingSpot[] = [
       zh: '带婴儿的最佳选择，也可以说是整个计划里最明智的决定：在龙楼订一间房——最好是本身即为获批观礼点的那两家酒店之一——就意味着有遮阴、有洗手间、有床，8 个月大的宝宝可以睡觉，一位大人上楼顶观礼即可。',
     },
     caveat: {
-      en: 'Longlou runs at 90–95% occupancy on launch nights and locals describe it as 一房难求, so book early and book a cancellable rate. Rooftop quality varies wildly between buildings.',
-      zh: '发射当晚龙楼入住率达 90–95%，当地人称“一房难求”，所以要尽早预订，并订可取消的价格。不同楼栋的楼顶条件差别很大。',
+      en: 'Longlou runs at over 90% occupancy on launch nights and locals describe it as 一房难求, so book early and book a cancellable rate. Rooftop quality varies wildly between buildings.',
+      zh: '发射当晚龙楼入住率超过 90%，当地人称“一房难求”，所以要尽早预订，并订可取消的价格。不同楼栋的楼顶条件差别很大。',
     },
     confidence: 'assumption',
     sourceIds: ['hinews', 'cnsa-viewing'],
@@ -428,8 +428,8 @@ export const NOISE_AND_BABY = [
   {
     title: { en: 'Crowds are the other hazard', zh: '人群是另一个风险' },
     detail: {
-      en: 'Longlou runs at 90–95% occupancy on launch nights, and the platforms and beaches fill hours early. Keep the baby in a carrier or a stroller, agree a meeting point in advance, and put your phone number on the 3-year-old.',
-      zh: '发射当晚龙楼入住率达 90–95%，观礼平台和海滩也会提前数小时挤满。让宝宝待在背带或婴儿车里，事先约定一个集合点，并把你的电话号码写在 3 岁孩子身上。',
+      en: 'Longlou runs at over 90% occupancy on launch nights, and the platforms and beaches fill hours early. Keep the baby in a carrier or a stroller, agree a meeting point in advance, and put your phone number on the 3-year-old.',
+      zh: '发射当晚龙楼入住率超过 90%，观礼平台和海滩也会提前数小时挤满。让宝宝待在背带或婴儿车里，事先约定一个集合点，并把你的电话号码写在 3 岁孩子身上。',
     },
   },
   {

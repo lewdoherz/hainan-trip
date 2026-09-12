@@ -14,6 +14,8 @@ export const TRIP = {
       { id: 'toddler', label: '3-year-old', age: '3 years' },
       { id: 'infant', label: '8-month-old', age: '8 months' },
     ],
+    /** Travelling with us; she books and pays for her own flight. */
+    grandmother: { id: 'grandmother', label: 'Grandmother (mother-in-law)', paysOwnFlight: true },
   },
   /** Planned launch window, China Standard Time (UTC+8). */
   launch: {
@@ -29,8 +31,8 @@ export const TRIP = {
   },
   /** Travel window we plan around (arrive before the launch, relax after). */
   tripStart: '2026-09-15',
-  tripEnd: '2026-09-21',
-  nightsInHainan: 6,
+  tripEnd: '2026-09-20',
+  nightsInHainan: 5,
 } as const;
 
 /**
