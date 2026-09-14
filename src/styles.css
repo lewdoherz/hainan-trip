@@ -42,6 +42,11 @@
   --r-xl: 26px;
 
   --maxw: 1220px;
+  /* Kept in sync with the real header by useAutoHideHeader(); --app-header-h
+     drops to 0 while the header is tucked away, so anything that positions
+     itself against the header reclaims the space automatically. */
+  --app-header-height: 122px;
+  --app-header-h: 122px;
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB',
     'Microsoft YaHei', sans-serif;
   --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
@@ -128,6 +133,19 @@ code {
   background: rgba(253, 251, 247, 0.88);
   backdrop-filter: saturate(150%) blur(12px);
   border-bottom: 1px solid var(--line);
+  /* Slides out of the way while scrolling down through the page. */
+  transition: transform 0.26s ease;
+  will-change: transform;
+}
+
+.app__header--hidden {
+  transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app__header {
+    transition: none;
+  }
 }
 
 .app__header-inner {
@@ -2943,14 +2961,21 @@ code {
 
 .pack__side {
   position: sticky;
-  /* Clears the sticky app header (122px at this width). */
-  top: 134px;
+  /* Tracks the header: it reclaims the space as soon as the header slides away. */
+  top: calc(var(--app-header-h) + 12px);
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-height: calc(100vh - 152px);
+  max-height: calc(100vh - var(--app-header-h) - 24px);
   overflow-y: auto;
   scrollbar-width: thin;
+  transition: top 0.26s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pack__side {
+    transition: none;
+  }
 }
 
 .pack__progress-head {
@@ -3089,8 +3114,8 @@ code {
 
 .pack-section {
   padding: clamp(15px, 2vw, 22px);
-  /* Stops the sticky header from covering a section when jumped to. */
-  scroll-margin-top: 134px;
+  /* Follows the header: no gap is reserved while the header is hidden. */
+  scroll-margin-top: calc(var(--app-header-h) + 12px);
 }
 
 .pack-section__head {
@@ -3291,10 +3316,6 @@ code {
     border: 1px solid var(--line);
     white-space: nowrap;
   }
-  .pack-section {
-    /* Header is 169px tall once the nav wraps onto its own row. */
-    scroll-margin-top: 182px;
-  }
 }
 
 @media (max-width: 780px) {
@@ -3317,10 +3338,6 @@ code {
   .pack__controls .btn,
   .pack__jump-item {
     min-height: 40px;
-  }
-  .pack-section {
-    /* Header is 221px tall on a phone (brand row + wrapped nav). */
-    scroll-margin-top: 234px;
   }
   .day {
     grid-template-columns: minmax(0, 1fr);

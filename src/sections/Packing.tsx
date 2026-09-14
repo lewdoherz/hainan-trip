@@ -3,6 +3,7 @@ import { PACKING_SECTIONS } from '../data/packing';
 import type { PackTier } from '../data/types';
 import { useTrip } from '../state';
 import { usePersistentState } from '../lib/storage';
+import { scrollToSection } from '../lib/header';
 import { SectionHeader } from '../components/ui';
 import { UI } from '../i18n/ui';
 
@@ -77,7 +78,8 @@ export function Packing() {
   };
 
   const jump = (id: string) => {
-    document.getElementById(`pack-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const target = document.getElementById(`pack-${id}`);
+    if (target) scrollToSection(target);
   };
 
   return (
