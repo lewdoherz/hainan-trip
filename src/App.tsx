@@ -7,6 +7,7 @@ import { Routes } from './sections/Routes';
 import { Costs } from './sections/Costs';
 import { Launch } from './sections/Launch';
 import { Plan } from './sections/Plan';
+import { Packing } from './sections/Packing';
 import { Sources } from './sections/Sources';
 import { TRIP } from './data/trip';
 import { LANGS } from './i18n/lang';
@@ -21,6 +22,7 @@ const TABS: { id: string; label: Bi }[] = [
   { id: 'costs', label: UI.navCosts },
   { id: 'launch', label: UI.navLaunch },
   { id: 'plan', label: UI.navPlan },
+  { id: 'packing', label: UI.navPacking },
   { id: 'sources', label: UI.navSources },
 ];
 
@@ -124,6 +126,7 @@ function Shell() {
           {tab === 'costs' && <Costs selectedOptionId={focusId} onSelectOption={setSelectedOptionId} />}
           {tab === 'launch' && <Launch />}
           {tab === 'plan' && <Plan />}
+          {tab === 'packing' && <Packing />}
           {tab === 'sources' && <Sources />}
         </div>
       </main>

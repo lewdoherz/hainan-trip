@@ -25,6 +25,13 @@
   --green: #3f7d52;
   --green-soft: #e2efe4;
 
+  /* Packing-list importance colours. Chosen so every one clears 4.5:1 on white. */
+  --pack-must: #a63d29;
+  --pack-high: #8a6108;
+  --pack-useful: #1a6062;
+  --pack-optional: #5d7774;
+  --pack-buy: #6b5a8e;
+
   --shadow-sm: 0 1px 2px rgba(15, 61, 62, 0.06), 0 1px 3px rgba(15, 61, 62, 0.05);
   --shadow-md: 0 6px 18px -8px rgba(15, 61, 62, 0.22), 0 2px 6px rgba(15, 61, 62, 0.06);
   --shadow-lg: 0 22px 50px -28px rgba(15, 61, 62, 0.45);
@@ -2925,6 +2932,326 @@ code {
   padding-top: 8px;
 }
 
+/* ---------------------------------------------------------------- packing */
+
+.pack__layout {
+  display: grid;
+  grid-template-columns: 272px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.pack__side {
+  position: sticky;
+  /* Clears the sticky app header (122px at this width). */
+  top: 134px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: calc(100vh - 152px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.pack__progress-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.pack__progress-count {
+  font-size: 1.02rem;
+  font-weight: 680;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.pack__progress-left {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.pack__bar {
+  height: 9px;
+  border-radius: 999px;
+  background: var(--sand-200);
+  overflow: hidden;
+}
+
+.pack__bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #8fc0c2, var(--teal-700));
+  transition: width 0.35s ease;
+}
+
+.pack__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.btn--chip-danger {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: #fff;
+}
+
+.pack__legend-title {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 680;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.pack__legend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.pack__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.83rem;
+  font-weight: 600;
+}
+
+.pack__swatch {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  background: currentColor;
+}
+
+.pack__jump {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pack__jump-item {
+  font: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  padding: 8px 11px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--ink-2);
+  font-size: 0.84rem;
+  font-weight: 560;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pack__jump-item:hover {
+  background: #fff;
+  color: var(--teal-900);
+}
+
+.pack__jump-item--done {
+  color: var(--green);
+}
+
+.pack__jump-count {
+  flex: none;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.pack__jump-item--done .pack__jump-count {
+  color: var(--green);
+}
+
+.pack__main {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.pack-section {
+  padding: clamp(15px, 2vw, 22px);
+  /* Stops the sticky header from covering a section when jumped to. */
+  scroll-margin-top: 134px;
+}
+
+.pack-section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+}
+
+.pack-section__title {
+  font-size: 1.06rem;
+}
+
+.pack-section__count {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 560;
+}
+
+.pack-section__count-num {
+  margin-left: 8px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 680;
+  color: var(--ink-2);
+  background: var(--sand-100);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+
+.pack-section--done .pack-section__count-num {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.pack-section__note,
+.pack-group__note {
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin-top: 11px;
+  padding: 9px 12px;
+  border-left: 3px solid var(--line-strong);
+  background: var(--sand-50);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+
+.pack-group + .pack-group {
+  margin-top: 16px;
+}
+
+.pack-group__title {
+  font-size: 0.86rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--teal-900);
+  margin-top: 16px;
+}
+
+.pack-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+}
+
+.pack-item__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 6px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-size: 0.92rem;
+  line-height: 1.42;
+  transition: background 0.12s;
+}
+
+.pack-item__label:hover {
+  background: var(--sand-50);
+}
+
+.pack-item__text {
+  /* The tier colour is the whole point: keep it on the text itself. */
+  color: currentColor;
+  font-weight: 560;
+}
+
+.pack-item__box {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  border: 1.8px solid var(--line-strong);
+  border-radius: 6px;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.pack-item__box::after {
+  content: '';
+  width: 9px;
+  height: 5px;
+  border-left: 2.2px solid #fff;
+  border-bottom: 2.2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px) scale(0.4);
+  opacity: 0;
+  transition: opacity 0.13s, transform 0.13s;
+}
+
+.pack-item__box:checked {
+  background: var(--teal-700);
+  border-color: var(--teal-700);
+}
+
+.pack-item__box:checked::after {
+  opacity: 1;
+  transform: rotate(-45deg) translateY(-1px) scale(1);
+}
+
+.pack-item--packed .pack-item__label {
+  opacity: 0.45;
+}
+
+.pack-item--packed .pack-item__text {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+.pack-tier-must {
+  color: var(--pack-must);
+}
+
+.pack-tier-high {
+  color: var(--pack-high);
+}
+
+.pack-tier-useful {
+  color: var(--pack-useful);
+}
+
+.pack-tier-optional {
+  color: var(--pack-optional);
+}
+
+.pack-tier-buy {
+  color: var(--pack-buy);
+}
+
+.pack__source {
+  font-size: 0.79rem;
+  color: var(--muted);
+  padding: 0 4px;
+}
+
 /* ---------------------------------------------------------------- responsive */
 
 @media (max-width: 1040px) {
@@ -2940,11 +3267,60 @@ code {
   .grid--3 {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
+  /* The sidebar stops being a sidebar: it stacks, and the jump list becomes a
+     horizontal scroller so it does not push the checklist off the screen. */
+  .pack__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pack__side {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+  .pack__jump {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 6px;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+  }
+  .pack__jump-item {
+    width: auto;
+    flex: none;
+    background: #fff;
+    border: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .pack-section {
+    /* Header is 169px tall once the nav wraps onto its own row. */
+    scroll-margin-top: 182px;
+  }
 }
 
 @media (max-width: 780px) {
   .grid--2 {
     grid-template-columns: minmax(0, 1fr);
+  }
+  /* Bigger tap targets: a checklist is thumb-driven on a phone. */
+  .pack-item__label {
+    padding: 10px 7px;
+    font-size: 0.95rem;
+  }
+  .pack-item__box {
+    width: 23px;
+    height: 23px;
+  }
+  .pack-section__count {
+    font-size: 0.72rem;
+  }
+  /* Thumb targets for the toolbar and the section chips. */
+  .pack__controls .btn,
+  .pack__jump-item {
+    min-height: 40px;
+  }
+  .pack-section {
+    /* Header is 221px tall on a phone (brand row + wrapped nav). */
+    scroll-margin-top: 234px;
   }
   .day {
     grid-template-columns: minmax(0, 1fr);

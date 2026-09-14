@@ -8,6 +8,8 @@ It compares five realistic strategies — drive + ferry with our own car, fly to
 
 **Available in English and Simplified Chinese** (English / 中文 switch in the header).
 
+**Plus a Packing tab**: the family's own 314-row packing list as an interactive, colour-coded checklist.
+
 Everything is adjustable: weights, prices and durations are live inputs, and the recommendation, rankings and badges recalculate instantly. All edits persist in `localStorage`.
 
 ## Languages / 语言
@@ -78,6 +80,7 @@ Presentation and travel data are deliberately separated. To update the app for a
 | `src/data/itinerary.ts` | Two itineraries for five travellers — five nights home from Sanya (recommended) and six nights home from Haikou — plus the launch-slip contingency plan. |
 | `src/data/bases.ts` | Where to stay, activities with age suitability, and family logistics. |
 | `src/data/budget.ts` | The trip budget: your four flight quotes, every Wenchang and Clearwater Bay room and villa price, and the five package shapes. |
+| `src/data/packing/*.ts` | The family packing list, split by area (`documents`, `adults`, `children`, `bags`, `medical`, `practical`) and collected in the order of the original document by `index.ts`. Each row keeps the importance tier it had in the source; the UI renders that as text colour instead of a repeated label. |
 | `src/data/sources.ts` | Every source with its verification date, plus the honest statement of what could not be verified. |
 | `src/i18n/` | `ui.ts` (every interface label and generated sentence, in both languages) and `lang.ts` (the `Bi` resolver, `fill()` interpolation, locale map). |
 | `src/lib/` | The engines: cost lines, time model, weighted scoring, **`budget.ts`** (trip totals and the value score), formatting, `localStorage` persistence. |
@@ -163,6 +166,16 @@ These are the items where the app deliberately cannot promise anything:
 9. **Car hire for five.** Whether a 7-seat MPV is available at the rate assumed, and — critically — whether an infant car seat can actually be reserved in Hainan.
 10. **Launch-night availability in Longlou.** The 90–95% occupancy figure is verified, and the Fulou rates in your screenshot are for 16–18 September, so book early.
 11. **Whether launch viewing needs a ticket this time,** and whether children and infants are ticketed. The budget leaves a line for this, defaulted to zero.
+
+## Packing checklist
+
+The **Packing** tab is the family's own packing list (`packing-list.txt`, the source document kept in this repo) turned into an interactive checklist — 314 rows across 14 sections, in the order of the original.
+
+- **The importance words are gone from the rows.** The source labelled every line `MUST BRING` / `HIGHLY USEFUL` / `USEFUL` / `OPTIONAL` / `BUY IN SANYA`; repeating those words 314 times was how the document read, and it made everything look the same. The label is now the **colour of the item text**, with the names appearing once, in the legend. The five colours are `--pack-must`, `--pack-high`, `--pack-useful`, `--pack-optional` and `--pack-buy` in `src/styles.css`, each chosen to clear WCAG AA (4.5:1) on white.
+- **Ticks are keyed on stable item ids**, never on the text, so switching to 中文 keeps every tick — and a duplicate id is a build-time-visible error rather than two rows quietly sharing one checkbox (`src/data/packing/index.ts`).
+- **State lives in `localStorage`** under `packed`, alongside the language and assumption state. There is a *Hide packed* filter and a two-step *Untick everything* (the second press confirms), because clearing 314 ticks by accident is unrecoverable.
+- The layout is a sticky sidebar (progress, legend, section jump list) beside the panels on desktop, collapsing to a single column with a horizontally scrolling section bar on phones; row hit areas are ~63 px tall on a phone, and the section anchors are offset for the sticky header at each breakpoint.
+- The list carries the source's own medical and safety notes (ORS and dehydration, weight-based dosing, the no-antimotility-drugs rule and its red flags, DEET/picaridin limits for under-3s, safer sleep for a 7-month-old, the CCC/3C power-bank rule). Those are the family's own document's words, not researched additions — the packing tab makes no external claims.
 
 ## Design notes
 

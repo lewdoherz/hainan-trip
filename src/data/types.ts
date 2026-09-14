@@ -355,3 +355,38 @@ export interface ItineraryVariant {
   summary: Bi;
   days: ItineraryDay[];
 }
+
+// ---------------------------------------------------------------------------
+// Packing list
+// ---------------------------------------------------------------------------
+
+/**
+ * How much an item matters. The source list labelled every row in words
+ * ("MUST BRING", "USEFUL", "OPTIONAL", …); the UI drops the label and encodes
+ * the same meaning as the colour of the item text.
+ */
+export type PackTier = 'must' | 'high' | 'useful' | 'optional' | 'buy';
+
+export interface PackItem {
+  /** Stable across translations — checkbox state is keyed on this, never on the text. */
+  id: string;
+  text: Bi;
+  tier: PackTier;
+}
+
+/** A subsection of the list, e.g. "Clothes" inside "Dad's suitcase". */
+export interface PackGroup {
+  id: string;
+  /** Omitted when the source has no heading for this block. */
+  title?: Bi;
+  note?: Bi;
+  items: PackItem[];
+}
+
+export interface PackSection {
+  id: string;
+  title: Bi;
+  note?: Bi;
+  /** Empty for prose-only sections such as the one-big-suitcase strategy. */
+  groups: PackGroup[];
+}
